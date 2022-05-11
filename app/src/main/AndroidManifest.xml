@@ -14,8 +14,9 @@
         android:theme="@style/Theme.Renter"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".login.LoginActivity"
+            android:exported="true"
+            android:theme="@style/SplashThemeLight">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
