@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "815212375744",
+    "project_id": "renterapp-fa381",
+    "storage_bucket": "renterapp-fa381.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815212375744:android:16fd2d530d1d0e4da00725",
+        "android_client_info": {
+          "package_name": "com.icoelloc.renter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815212375744-2bbfni2la6jl3plbid142dfiaqt2tt79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQwELx3bvmWYCiyvNhpjJOUZO9RdYV8GQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815212375744-2bbfni2la6jl3plbid142dfiaqt2tt79.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
