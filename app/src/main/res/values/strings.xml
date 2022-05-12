@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Renter</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_google">Sign In with Google</string>
+    <string name="sign_in_description">Log in on the app with Google services</string>
+    <string name="insta_logo">insta_logo</string>
+    <string name="github_logo">github_logo</string>
+    <string name="twitter_logo">twitter_logo</string>
+    <string name="google_logo">google_logo</string>
 </resources>
