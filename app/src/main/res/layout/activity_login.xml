@@ -15,7 +15,7 @@
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         app:srcCompat="@drawable/google"
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="63dp"
