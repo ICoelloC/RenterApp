@@ -48,12 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:backgroundTint="#57A0F6"
         android:layout_marginTop="150dp"
-        android:text="@string/sign_in_google"
+        android:backgroundTint="#57A0F6"
         android:drawableLeft="@drawable/googleg_standard_color_18"
         android:drawablePadding="0dp"
-        tools:ignore="RtlHardcoded" />
+        android:text="@string/sign_in_google"
+        android:textStyle="bold"
+        tools:ignore="RtlHardcoded,TextContrastCheck" />
 
 
     <TextView
@@ -77,8 +78,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:contentDescription="@string/twitter_logo"
             app:srcCompat="@drawable/twitter"
-            android:contentDescription="@string/twitter_logo"/>
+            tools:ignore="ImageContrastCheck" />
 
         <ImageView
             android:id="@+id/login_img_github"
