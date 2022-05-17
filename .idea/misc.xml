@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.236" />
+        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable/ic_launcher_background.xml" value="0.236" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable/splash_screen.xml" value="0.203" />
-        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/activity_main.xml" value="0.15433946130825138" />
+        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/activity_maps.xml" value="0.1876870457460453" />
       </map>
     </option>
   </component>
