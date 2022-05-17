@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <color name="renter_nav_drawer_header">#2296FF</color>
+    <color name="renter_nav_drawer_separator">#2296FF</color>
+    <color name="renter_nav_drawer">#08B5FF</color>
+    <color name="renter_separator">#5208B5FF</color>
+    <color name="renter_chat_color_msg_propio">#73A9DB</color>
+    <color name="renter_chat_color_msg_ext">#51ABFF</color>
+
+
 </resources>

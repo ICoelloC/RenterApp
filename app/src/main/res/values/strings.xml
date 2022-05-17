@@ -11,4 +11,15 @@
     <string name="prefs_file" translatable="false">com.icoelloc.renter.PREFERENCE_FILE_KEY</string>
     <string name="visit_us">Visit us on the following social networks</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="my_properties">My Properties</string>
+    <string name="my_home">My home</string>
+    <string name="owned">Owned</string>
+    <string name="available">Available</string>
+    <string name="close_to_me">Close to me</string>
+    <string name="search">Search</string>
+    <string name="account">Account</string>
+    <string name="my_account">My account</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="main_activity">main_activity</string>
 </resources>
