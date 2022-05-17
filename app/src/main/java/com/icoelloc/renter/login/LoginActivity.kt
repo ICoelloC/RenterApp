@@ -1,24 +1,27 @@
 package com.icoelloc.renter.login
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.icoelloc.renter.R
 import com.icoelloc.renter.main.MainActivity
 import com.icoelloc.renter.objects.Shared
 
+
 class LoginActivity : AppCompatActivity() {
 
-    private var continues: Boolean = false
-    public var RC_SIGN_IN = 1
+    public var gRcSignIn = 1
+    private lateinit var mGoogleSignInClient:GoogleSignInClient
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +34,9 @@ class LoginActivity : AppCompatActivity() {
 
         Shared.context = this
         val btnLogin = findViewById<Button>(R.id.btn_login_googleSignIn)
-        var btnTwitter = findViewById<ImageView>(R.id.login_img_twitter)
-        var btnGithub = findViewById<ImageView>(R.id.login_img_github)
-        var btnInstagram = findViewById<ImageView>(R.id.login_img_instagram)
+        val btnTwitter = findViewById<ImageView>(R.id.login_img_twitter)
+        val btnGithub = findViewById<ImageView>(R.id.login_img_github)
+        val btnInstagram = findViewById<ImageView>(R.id.login_img_instagram)
 
         btnLogin.setOnClickListener {
             loginGoogle()
@@ -51,10 +54,44 @@ class LoginActivity : AppCompatActivity() {
             irInstagram()
         }
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == gRcSignIn) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            irMainActivity()
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("GSO", "signInResult:failed code=" + e.statusCode)
+        }
     }
 
     private fun loginGoogle() {
-
+        val signInIntent = mGoogleSignInClient.signInIntent
+        startActivityForResult(signInIntent, gRcSignIn)
     }
 
     private fun irInstagram() {
