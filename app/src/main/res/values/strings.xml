@@ -24,4 +24,8 @@
     <string name="main_activity">main_activity</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="foto_perfil">foto_perfil</string>
+    <string name="gallery_button">Gallery Button</string>
+    <string name="sample_text">sample_text</string>
+    <string name="btn_save">btn save</string>
 </resources>
