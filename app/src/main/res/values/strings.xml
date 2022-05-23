@@ -28,4 +28,6 @@
     <string name="gallery_button">Gallery Button</string>
     <string name="sample_text">sample_text</string>
     <string name="btn_save">btn save</string>
+    <string name="availables">availables</string>
+    <string name="rented">rented</string>
 </resources>

@@ -10,7 +10,7 @@
 
 
     <color name="renter_nav_drawer_header">#2296FF</color>
-    <color name="renter_nav_drawer_separator">#2296FF</color>
+    <color name="renter_nav_drawer_separator">#B72296FF</color>
     <color name="renter_nav_drawer">#08B5FF</color>
     <color name="renter_separator">#5208B5FF</color>
     <color name="renter_chat_color_msg_propio">#73A9DB</color>

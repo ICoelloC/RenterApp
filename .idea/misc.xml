@@ -6,12 +6,13 @@
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.236" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable/customborder.xml" value="0.3655" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable/ic_launcher_background.xml" value="0.236" />
+        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable/lineseparator.xml" value="0.3655" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/drawable/splash_screen.xml" value="0.203" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/activity_maps.xml" value="0.1876870457460453" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/fragment_close_to_me.xml" value="0.3009833262077811" />
-        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/fragment_my_account.xml" value="0.33" />
+        <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/fragment_my_account.xml" value="0.22" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/fragment_my_home.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/fragment_my_properties.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/ivanc/Desktop/Renter/app/src/main/res/layout/fragment_search.xml" value="0.3009833262077811" />

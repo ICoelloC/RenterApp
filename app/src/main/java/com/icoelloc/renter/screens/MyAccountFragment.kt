@@ -42,16 +42,13 @@ class MyAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-
-        val imageView: CircleImageView = view.findViewById(R.id.frgmnt_myacc_profpic)
+        //val imageView: CircleImageView = view.findViewById(R.id.frgmnt_myacc_profpic)
         val email: TextView = view.findViewById(R.id.myaccc_email)
         val accName: TextView = view.findViewById(R.id.myaccc_name)
 
         accName.text = personName
         email.text = personEmail
-        imageView.setImageURI(personPhoto)
+        //imageView.setImageURI(personPhoto)
 
     }
 }
