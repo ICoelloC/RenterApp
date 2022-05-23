@@ -1,7 +1,6 @@
 package com.icoelloc.renter.login
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -16,11 +15,12 @@ import com.google.android.gms.tasks.Task
 import com.icoelloc.renter.R
 import com.icoelloc.renter.main.MainActivity
 import com.icoelloc.renter.objects.Shared
+import com.icoelloc.renter.utils.Utils
 
 
 class LoginActivity : AppCompatActivity() {
 
-    public var gRcSignIn = 1
+    private var gRcSignIn = 1
     private lateinit var mGoogleSignInClient:GoogleSignInClient
 
 
@@ -43,15 +43,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnGithub.setOnClickListener{
-            irGithub()
+            Utils.abrirURL(this, "https://github.com/ICoelloC")
         }
 
         btnTwitter.setOnClickListener{
-            irTwitter()
+            Utils.abrirURL(this, "https://twitter.com/ICoelloC")
         }
 
         btnInstagram.setOnClickListener{
-            irInstagram()
+            Utils.abrirURL(this, "https://www.instagram.com/icoello_/")
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -62,17 +62,9 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == gRcSignIn) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
@@ -83,8 +75,6 @@ class LoginActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             irMainActivity()
         } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("GSO", "signInResult:failed code=" + e.statusCode)
         }
     }
@@ -92,27 +82,6 @@ class LoginActivity : AppCompatActivity() {
     private fun loginGoogle() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, gRcSignIn)
-    }
-
-    private fun irInstagram() {
-        val url = "https://www.instagram.com/icoello_/"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
-    }
-
-    private fun irTwitter() {
-        val url = "https://twitter.com/ICoelloC"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
-    }
-
-    private fun irGithub() {
-        val url = "https://github.com/ICoelloC"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
     }
 
     override fun onResume() {
