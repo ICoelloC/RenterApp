@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
     }
 
@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
-            val account = completedTask.getResult(ApiException::class.java)
+            completedTask.getResult(ApiException::class.java)
             irMainActivity()
         } catch (e: ApiException) {
             Log.w("GSO", "signInResult:failed code=" + e.statusCode)
