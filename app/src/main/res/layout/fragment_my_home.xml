@@ -7,6 +7,14 @@
     android:background="@color/renter_chat_color_msg_propio">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myhome_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

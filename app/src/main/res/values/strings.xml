@@ -30,4 +30,18 @@
     <string name="btn_save">btn save</string>
     <string name="availables">availables</string>
     <string name="rented">rented</string>
+    <string name="bedrooms">bedroom/s</string>
+    <string name="bathrooms">bathroom/s</string>
+    <string name="email">Email</string>
+    <string name="renter_description">The new way to find your new home</string>
+    <string name="appname">Renter</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">If you don\'t have an account</string>
+    <string name="have_account">If you have an account</string>
+    <string name="sign_up_here">\ sign up here</string>
+    <string name="sign_in_here">\ sign in here</string>
+    <string name="no_net">Error, sin conexion a internet</string>
+    <string name="isAlreadyExist">Ya existe el usuario</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
 </resources>

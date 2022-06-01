@@ -1,5 +1,6 @@
 package com.icoelloc.renter.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
@@ -12,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import java.io.File
+import java.security.MessageDigest
+import kotlin.experimental.and
 
 object Utils {
     /**
@@ -117,5 +120,37 @@ object Utils {
         for (file in files)
             if (file.isFile)
                 file.delete()
+    }
+
+    fun showToast(activity: Activity, s: String) {
+        Toast.makeText(activity, s, Toast.LENGTH_SHORT).show()
+    }
+
+    fun isEmailValid(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun isPasswordValid(pass: String): Boolean {
+        return pass.length >= 6
+    }
+
+
+    fun encrypt(pwd: String): String? {
+        var md: MessageDigest?
+        var bytes: ByteArray? = null
+        try {
+            md = MessageDigest.getInstance("SHA-256")
+            bytes = md.digest(pwd.toByteArray(charset("UTF-8")))
+        } catch (ex: java.lang.Exception) {
+        }
+        return convertToHex(bytes)
+    }
+
+    fun convertToHex(bytes: ByteArray?): String? {
+        val sb = StringBuffer()
+        for (i in bytes!!.indices) {
+            sb.append(((bytes[i] and 0xff.toByte()) + 0x100).toString(16).substring(1))
+        }
+        return sb.toString()
     }
 }

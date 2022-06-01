@@ -4,6 +4,7 @@ import java.util.*
 
 data class Property(
     var id: String = "",
+    var nombre: String = "",
     var latitud: String = "",
     var longitud: String = "",
     var inquilino: String = "",
@@ -14,6 +15,7 @@ data class Property(
 
     constructor(
         id: String,
+        nombre: String,
         latitud: String,
         longitud: String,
         inquilino: String,
@@ -23,6 +25,7 @@ data class Property(
         fecha: Date
     ) : this(
         id,
+        nombre,
         latitud,
         longitud,
         inquilino,
@@ -32,14 +35,14 @@ data class Property(
     )
 
     override fun toString(): String {
-        return "Lugar(id='$id',latitud='$latitud', longitud='$longitud', inquilino='$inquilino', propietario=$propietario, banios=$banios, habitaciones='$habitaciones')"
+        return "Lugar(id='$id', nomre='$nombre',latitud='$latitud', longitud='$longitud', inquilino='$inquilino', propietario=$propietario, banios=$banios, habitaciones='$habitaciones')"
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Property) return false
-
         if (id != other.id) return false
+        if (nombre != other.nombre) return false
         if (latitud != other.latitud) return false
         if (longitud != other.longitud) return false
         if (inquilino != other.inquilino) return false
