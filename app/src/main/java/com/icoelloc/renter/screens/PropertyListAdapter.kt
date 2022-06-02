@@ -135,8 +135,8 @@ class PropertyListAdapter(
      */
     class DomicilioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemDomicilioNombre: TextView = itemView.findViewById(R.id.myHome_name)
-        val itemDomicilioHabitaciones: TextView = itemView.findViewById(R.id.myHome_bedrooms)
-        val itemDomicilioBanios: TextView = itemView.findViewById(R.id.myHome_bathrooms)
+        val itemDomicilioHabitaciones: TextView = itemView.findViewById(R.id.numHabitaciones)
+        val itemDomicilioBanios: TextView = itemView.findViewById(R.id.numBanios)
         val context = itemView.context
 
     }

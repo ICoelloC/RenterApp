@@ -44,4 +44,5 @@
     <string name="isAlreadyExist">Ya existe el usuario</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
+    <string name="userNotCorrect">Invalid user</string>
 </resources>

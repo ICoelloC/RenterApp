@@ -11,7 +11,7 @@
         android:layout_height="90dp"
         android:layout_marginTop="16dp"
         android:layout_gravity="center"
-        android:src="@drawable/pp"/>
+        android:src="@drawable/renta"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         android:id="@+id/nav_drawer_header_username"
         android:padding="8dp"
         android:textSize="20sp"
-        android:text="Iván Coello Cortés"
+        android:text="@string/username"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textAlignment="center"/>
@@ -30,7 +30,7 @@
         android:id="@+id/nav_drawer_header_email"
         android:padding="8dp"
         android:textSize="20sp"
-        android:text="ivancoellocortes@gmail.com"
+        android:text="@string/email"
         android:textColor="@color/white"
         android:textAlignment="center"/>
     

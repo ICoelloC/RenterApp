@@ -2,18 +2,22 @@ package com.icoelloc.renter.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.icoelloc.renter.R
 import com.icoelloc.renter.main.MainActivity
 import com.icoelloc.renter.objects.Shared
@@ -22,10 +26,13 @@ import com.icoelloc.renter.utils.Utils
 
 class LoginActivity : AppCompatActivity() {
 
-    private var gRcSignIn = 1
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
-    private val fireAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val googleSignIn = 333
+
+    private var email: String = ""
+    private var pass: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,25 +43,22 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        if (fireAuth.currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.req_id_token))
-            .requestEmail()
-            .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-
+        auth = Firebase.auth
+        initGoogle()
         Shared.context = this
+        initButtons()
+
+    }
+
+    private fun initButtons() {
+
         val linkSignUp = findViewById<TextView>(R.id.login_signup_link)
         val btnLogin = findViewById<Button>(R.id.btn_login_googleSignIn)
         val btnTwitter = findViewById<ImageView>(R.id.login_img_twitter)
         val btnGithub = findViewById<ImageView>(R.id.login_img_github)
         val btnInstagram = findViewById<ImageView>(R.id.login_img_instagram)
         val normalLogin = findViewById<Button>(R.id.normal_login)
+
 
         linkSignUp.setOnClickListener {
             goRegisterScreen()
@@ -79,23 +83,72 @@ class LoginActivity : AppCompatActivity() {
         normalLogin.setOnClickListener {
             normalLogin()
         }
+    }
 
+    private fun initGoogle() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.req_id_token))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient.signOut()
     }
 
     private fun normalLogin() {
 
-        val email = findViewById<TextView>(R.id.login_email).text.toString()
-        val password = findViewById<TextView>(R.id.login_password).text.toString()
-        fireAuth.signInWithEmailAndPassword(email, password)
+        val loginEmail = findViewById<TextView>(R.id.login_email)
+        val loginPassword = findViewById<TextView>(R.id.login_password)
+
+
+        email = loginEmail.text.toString().trim()
+        pass = Utils.encrypt(loginPassword.text.toString().trim())!!
+
+        if (checkEmpty(email, pass)) {
+            if (Utils.isNetworkAvailable(this)) {
+                userExists(email, pass)
+            } else {
+                val snackbar = Snackbar.make(
+                    findViewById(android.R.id.content),
+                    R.string.no_net,
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                snackbar.setActionTextColor(getColor(R.color.renter_nav_drawer))
+                snackbar.setAction("Conectar") {
+                    val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+                    startActivity(intent)
+                    finish()
+                }
+                snackbar.show()
+            }
+            Log.i("realm", "usuario logeado")
+        }
+    }
+
+    private fun userExists(email: String, pass: String) {
+
+        val loginEmail = findViewById<TextView>(R.id.login_email)
+        val loginPassword = findViewById<TextView>(R.id.login_password)
+
+
+        auth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.i("Firebase", "signInWithEmail:success")
+                    val user = auth.currentUser
+                    Log.i("Firebase", user.toString())
+                    abrirMain()
                 } else {
-                    Log.w("LoginActivity", "signInWithEmail:failure", task.exception)
-                    Utils.showToast(this, "Authentication failed.")
+                    // If sign in fails, display a message to the user.
+                    Log.w("Firebase", "signInWithEmail:failure", task.exception)
+                    loginEmail.error = resources.getString(R.string.userNotCorrect)
                 }
+
             }
+    }
+
+    private fun checkEmpty(email: String, pass: String): Boolean {
+        return email.isNotEmpty() && pass.isNotEmpty()
     }
 
     private fun goRegisterScreen() {
@@ -105,34 +158,50 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == gRcSignIn) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
+        if (requestCode == googleSignIn) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+            try {
+
+                val account = task.getResult(ApiException::class.java)
+                if (account != null) {
+
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    FirebaseAuth.getInstance().signInWithCredential(credential)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                abrirMain()
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Error al iniciar sesion con Google",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                }
+
+            } catch (e: ApiException) {
+                Toast.makeText(this, "Error al iniciar sesion con Google", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
         }
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            completedTask.getResult(ApiException::class.java)
-            irMainActivity()
-        } catch (e: ApiException) {
-            Log.w("GSO", "signInResult:failed code=" + e.statusCode)
-        }
+    private fun abrirMain() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     private fun loginGoogle() {
-       //login with google
-        val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, gRcSignIn)
+        val signInIntent: Intent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, googleSignIn)
     }
 
     override fun onResume() {
         super.onResume()
         Shared.context = this
-    }
-
-    private fun irMainActivity() {
-        val mainIntent = Intent(this, MainActivity::class.java).apply {}
-        startActivity(mainIntent)
     }
 }

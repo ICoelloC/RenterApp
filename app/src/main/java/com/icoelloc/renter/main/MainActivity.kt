@@ -46,9 +46,11 @@ class MainActivity : AppCompatActivity() {
         val headerView : View = navView.getHeaderView(0)
         val email : TextView = headerView.findViewById(R.id.nav_drawer_header_email)
         val name : TextView = headerView.findViewById(R.id.nav_drawer_header_username)
+        val photo : ImageView = headerView.findViewById(R.id.nav_drawer_header_profile_pi)
 
         email.text = FirebaseAuth.getInstance().currentUser?.email
         name.text = FirebaseAuth.getInstance().currentUser?.displayName
+        photo.setImageURI(FirebaseAuth.getInstance().currentUser?.photoUrl)
 
     }
 
