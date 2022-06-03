@@ -23,14 +23,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/myacc_profpic"
             android:layout_width="164dp"
             android:layout_height="164dp"
             android:layout_gravity="center"
             android:layout_marginTop="64dp"
             android:contentDescription="@string/foto_perfil"
-            android:src="@drawable/renta"/>
+            android:src="@drawable/renta" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:text="4" />
+                android:text="x" />
 
             <TextView
                 android:layout_width="75dp"
@@ -97,11 +97,11 @@
                 android:src="@drawable/key" />
 
             <TextView
-                android:id="@+id/myacc_numdisponibles"
+                android:id="@+id/myacc_numpropiedades"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:text="4" />
+                android:text="x" />
 
             <TextView
                 android:layout_width="75dp"

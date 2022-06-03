@@ -45,4 +45,5 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="userNotCorrect">Invalid user</string>
+    <string name="profile_image">profile_image</string>
 </resources>
