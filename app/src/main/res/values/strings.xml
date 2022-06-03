@@ -11,4 +11,39 @@
     <string name="prefs_file" translatable="false">com.icoelloc.renter.PREFERENCE_FILE_KEY</string>
     <string name="visit_us">Visit us on the following social networks</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="my_properties">My Properties</string>
+    <string name="my_home">My home</string>
+    <string name="owned">Owned</string>
+    <string name="available">Available</string>
+    <string name="close_to_me">Close to me</string>
+    <string name="search">Search</string>
+    <string name="account">Account</string>
+    <string name="my_account">My account</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="main_activity">main_activity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="foto_perfil">foto_perfil</string>
+    <string name="gallery_button">Gallery Button</string>
+    <string name="sample_text">sample_text</string>
+    <string name="btn_save">btn save</string>
+    <string name="availables">availables</string>
+    <string name="rented">rented</string>
+    <string name="bedrooms">bedroom/s</string>
+    <string name="bathrooms">bathroom/s</string>
+    <string name="email">Email</string>
+    <string name="renter_description">The new way to find your new home</string>
+    <string name="appname">Renter</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">If you don\'t have an account</string>
+    <string name="have_account">If you have an account</string>
+    <string name="sign_up_here">\ sign up here</string>
+    <string name="sign_in_here">\ sign in here</string>
+    <string name="no_net">Error, sin conexion a internet</string>
+    <string name="isAlreadyExist">Ya existe el usuario</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="userNotCorrect">Invalid user</string>
+    <string name="profile_image">profile_image</string>
 </resources>
