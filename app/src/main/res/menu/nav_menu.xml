@@ -3,37 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="@string/owned">
-        <menu>
-            <item
-                android:id="@+id/nav_mi_domicilio"
-                android:title="@string/my_home"/>
-            <item
-                android:id="@+id/nav_mis_propiedades"
-                android:title="@string/my_properties" />
-        </menu>
-    </item>
+    <group>
+        <item android:title="@string/owned">
+            <menu>
+                <item
+                    android:id="@+id/nav_mi_domicilio"
+                    android:title="@string/my_home"/>
+                <item
+                    android:id="@+id/nav_mis_propiedades"
+                    android:title="@string/my_properties" />
+            </menu>
+        </item>
 
-    <item android:title="@string/available">
-        <menu>
-            <item
-                android:id="@+id/nav_cerca_mi"
-                android:title="@string/close_to_me" />
+        <item android:title="@string/available">
+            <menu>
+                <item
+                    android:id="@+id/nav_cerca_mi"
+                    android:title="@string/close_to_me" />
 
-            <item
-                android:id="@+id/nav_buscar"
-                android:title="@string/search" />
-        </menu>
-    </item>
+                <item
+                    android:id="@+id/nav_buscar"
+                    android:title="@string/search" />
+            </menu>
+        </item>
 
 
 
-    <item android:title="@string/account">
-        <menu>
-            <item
-                android:id="@+id/nav_mi_perfil"
-                android:title="@string/my_account" />
-        </menu>
-    </item>
+        <item android:title="@string/account">
+            <menu>
+                <item
+                    android:id="@+id/nav_mi_perfil"
+                    android:title="@string/my_account" />
+            </menu>
+        </item>
+    </group>
 
 </menu>
