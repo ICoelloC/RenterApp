@@ -70,4 +70,5 @@
     <string name="owner">owner_mail</string>
     <string name="accept">accept</string>
     <string name="cancel">cancel</string>
+    <string name="addhome">addHome</string>
 </resources>

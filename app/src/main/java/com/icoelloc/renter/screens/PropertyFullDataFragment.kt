@@ -138,7 +138,7 @@ class PropertyFullDataFragment(
         detalleDomicilioInputPrecio.setText("0")
         detalleDomicilioInputHabitaciones.setText("0")
         detalleDomicilioInputBanios.setText("0")
-        detalleDomicilioInputInquilino.setText("0")
+        detalleDomicilioInputInquilino.setText("")
         detalleDomicilioPropietario.text = usuario.email
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE

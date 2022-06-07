@@ -60,7 +60,7 @@ class MyHomeFragment : Fragment() {
         cargarDomicilios()
         iniciarSwipeHorizontal()
         domiciliosRecycler.layoutManager = LinearLayoutManager(context)
-        //propiedadesFABNuevo.setOnClickListener { nuevoElemento() }
+        domiciliosFabNuevo.setOnClickListener { nuevoElemento() }
     }
 
     private fun iniciarSwipeRefresh() {

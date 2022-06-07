@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:background="@color/white">
 
     <ViewFlipper
         android:id="@+id/itemDetallesImgsFlipper"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="140dp">
 
         <ImageView
             android:id="@+id/itemDetalleFoto1"
@@ -43,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="110dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/renter_nav_drawer"
         android:clickable="true"
@@ -60,7 +61,7 @@
             android:id="@+id/itemDetalleDomicilioLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="230dp"
+            android:layout_marginTop="170dp"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -99,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:textColor="@color/renter_nav_drawer_header" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,7 +223,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:inputType="number"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/renter_nav_drawer_header" />
             </com.google.android.material.textfield.TextInputLayout>
 
