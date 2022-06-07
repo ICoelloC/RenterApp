@@ -1,74 +1,151 @@
 package com.icoelloc.renter.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.view.MenuItem
+import android.provider.Settings
+import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.icoelloc.renter.R
-import com.icoelloc.renter.screens.*
+import com.icoelloc.renter.utils.CirculoTransformacion
+import com.icoelloc.renter.utils.MyApp
+import com.icoelloc.renter.utils.Utils
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.nav_header.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var toggle:ActionBarDrawerToggle
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var auth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        auth = Firebase.auth
 
-        val drawerLayout : DrawerLayout = findViewById(R.id.drawer_layout)
-        toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val navView : NavigationView = findViewById(R.id.nav_view)
-        navView.setNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.nav_mi_domicilio -> replaceFragment(MyHomeFragment())
-                R.id.nav_mis_propiedades -> replaceFragment(MyPropertiesFragment())
-                R.id.nav_cerca_mi -> replaceFragment(CloseToMeFragment())
-                R.id.nav_buscar -> replaceFragment(SearchFragment())
-                R.id.nav_mi_perfil -> replaceFragment(MyAccountFragment())
+
+        configuracionNavDrawer()
+
+        initPermisos()
+        comprobarConexion()
+        initUI()
+
+    }
+
+    private fun configuracionNavDrawer() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_my_home,
+                R.id.nav_mis_propiedades,
+                R.id.nav_cerca_mi,
+                R.id.nav_buscar,
+                R.id.nav_mi_perfil,
+            ), drawerLayout
+        )
+        navView.setupWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+
+    private fun initUI() {
+        mostrarDatosUsuarioMenu()
+    }
+
+    private fun mostrarDatosUsuarioMenu() {
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+        val headerView: View = navigationView.getHeaderView(0)
+        val navUsername: TextView = headerView.findViewById(R.id.nav_drawer_header_username)
+        val navUserEmail: TextView = headerView.findViewById(R.id.nav_drawer_header_email)
+        val navUserImage: ImageView = headerView.findViewById(R.id.nav_drawer_header_profile_pi)
+        navUsername.text = auth.currentUser?.displayName
+        navUserEmail.text = auth.currentUser?.email
+
+        if (auth.currentUser?.photoUrl != null) {
+            Picasso.get()
+                .load(auth.currentUser?.photoUrl)
+                .transform(CirculoTransformacion())
+                .into(navUserImage)
+        }
+    }
+
+    private fun comprobarConexion() {
+        comprobarRed()
+        comprobarGPS()
+    }
+
+    private fun comprobarGPS() {
+        if (Utils.isGPSAvaliable(applicationContext)) {
+            Toast.makeText(applicationContext, "Existe conexión a GPS", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            val snackbar = Snackbar.make(
+                findViewById(android.R.id.content),
+                "Es necesaria una conexión a GPS",
+                Snackbar.LENGTH_INDEFINITE
+            )
+            snackbar.setActionTextColor(getColor(R.color.renter_nav_drawer))
+            snackbar.setAction("Conectar") {
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
             }
-            true
+            snackbar.show()
         }
-
-        //set email and name in header
-        val headerView : View = navView.getHeaderView(0)
-        val email : TextView = headerView.findViewById(R.id.nav_drawer_header_email)
-        val name : TextView = headerView.findViewById(R.id.nav_drawer_header_username)
-        val photo : ImageView = headerView.findViewById(R.id.nav_drawer_header_profile_pi)
-
-        email.text = FirebaseAuth.getInstance().currentUser?.email
-        name.text = FirebaseAuth.getInstance().currentUser?.displayName
-        photo.setImageURI(FirebaseAuth.getInstance().currentUser?.photoUrl)
-
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        if (toggle.onOptionsItemSelected(item)){
-            return true
+    private fun comprobarRed() {
+        if (Utils.isNetworkAvailable(applicationContext)) {
+            Toast.makeText(applicationContext, "Existe conexión a internet", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            val snackbar = Snackbar.make(
+                findViewById(android.R.id.content),
+                "Es necesaria una conexión a internet",
+                Snackbar.LENGTH_INDEFINITE
+            )
+            snackbar.setActionTextColor(getColor(R.color.renter_nav_drawer))
+            snackbar.setAction("Conectar") {
+                val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+                startActivity(intent)
+            }
+            snackbar.show()
         }
-
-        return super.onOptionsItemSelected(item)
     }
 
-
-    private fun replaceFragment(fragment:Fragment){
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
-        fragmentTransaction.commit()
+    private fun initPermisos() {
+        if (!(this.application as MyApp).APP_PERMISOS)
+            (this.application as MyApp).initPermisos()
     }
 
 }

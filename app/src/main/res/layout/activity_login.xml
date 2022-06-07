@@ -72,7 +72,7 @@
         app:startIconDrawable="@drawable/pass_icon"
         app:endIconMode="password_toggle"
         app:endIconDrawable="@drawable/pass_visible"
-        android:hint="@string/email"
+        android:hint="@string/password"
         >
 
         <com.google.android.material.textfield.TextInputEditText

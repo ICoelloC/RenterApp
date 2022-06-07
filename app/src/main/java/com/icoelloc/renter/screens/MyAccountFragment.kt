@@ -78,7 +78,6 @@ class MyAccountFragment : Fragment() {
         txtNombreUsuario.text = auth.currentUser?.displayName
         txtEmail.text = auth.currentUser?.email
         cargarImagenUsuario(auth.currentUser?.photoUrl)
-
         cargarNumPropiedadesAlquiladas(auth.currentUser?.email)
         cargarNumPropiedades(auth.currentUser?.email)
 
@@ -101,11 +100,13 @@ class MyAccountFragment : Fragment() {
     }
 
     private fun cargarImagenUsuario(photoUrl: Uri?) {
-        Picasso.get()
-            .load(auth.currentUser?.photoUrl)
-            .transform(CirculoTransformacion())
-            .resize(130, 130)
-            .into(imgPerfil)
+
+        if (photoUrl != null) {
+            Picasso.get()
+                .load(photoUrl)
+                .transform(CirculoTransformacion())
+                .into(imgPerfil)
+        }
     }
 
 }

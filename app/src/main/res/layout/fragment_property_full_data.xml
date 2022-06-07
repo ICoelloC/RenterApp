@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    android:background="@color/white">
+
+    <ViewFlipper
+        android:id="@+id/itemDetallesImgsFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="140dp">
+
+        <ImageView
+            android:id="@+id/itemDetalleFoto1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/renta"/>
+
+        <ImageView
+            android:id="@+id/itemDetalleFoto2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/temp_image"/>
+
+        <ImageView
+            android:id="@+id/itemDetalleFoto3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/temp_image"/>
+
+        <ImageView
+            android:id="@+id/itemDetalleFoto4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/temp_image"/>
+
+    </ViewFlipper>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/detalleDomicilioFabCamara"
+        style="@android:style/Widget.Material.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/renter_nav_drawer"
+        android:clickable="true"
+        android:src="@drawable/camara"
+        app:rippleColor="@color/white"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="@string/buttoncamera" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/itemDetalleDomicilioLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/detalleDomicilioTextNombre"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="@string/nombre"
+                android:textColorHint="@color/renter_nav_drawer_header">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/detalleDomicilioInputNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:textColor="@color/renter_nav_drawer_header"
+                    tools:ignore="DuplicateClickableBoundsCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/detalleDomicilioTextContacto"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="@string/contacto"
+                android:textColorHint="@color/renter_nav_drawer_header"
+                app:startIconDrawable="@drawable/phone_icon"
+                app:startIconTint="@color/renter_nav_drawer_header">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/detalleDomicilioInputContacto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:inputType="phone"
+                    android:textColor="@color/renter_nav_drawer_header" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/detalleDomicilioTextMetros"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/superficie"
+                    android:textColorHint="@color/renter_nav_drawer_header"
+                    app:startIconDrawable="@drawable/area_icon"
+                    app:startIconTint="@color/renter_nav_drawer_header">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalleDomicilioInputMetros"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:inputType="number"
+                        android:textColor="@color/renter_nav_drawer_header" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/detalleDomicilioTextPrecio"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/precio"
+                    android:textColorHint="@color/renter_nav_drawer_header"
+                    app:startIconDrawable="@drawable/euro_icon"
+                    app:startIconTint="@color/renter_nav_drawer_header">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalleDomicilioInputPrecio"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:inputType="number"
+                        android:textColor="@color/renter_nav_drawer_header" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/detalleDomicilioTextHabitaciones"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/habitaciones"
+                    android:textColorHint="@color/renter_nav_drawer_header"
+                    app:startIconDrawable="@drawable/bedroom_icon"
+                    app:startIconTint="@color/renter_nav_drawer_header">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalleDomicilioInputHabitaciones"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:inputType="number"
+                        android:textColor="@color/renter_nav_drawer_header" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/detalleDomicilioTextBanios"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/banios"
+                    android:textColorHint="@color/renter_nav_drawer_header"
+                    app:startIconDrawable="@drawable/bathroom_icon"
+                    app:startIconTint="@color/renter_nav_drawer_header">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detalleDomicilioInputBanios"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:inputType="number"
+                        android:textColor="@color/renter_nav_drawer_header" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/detalleDomicilioTextInquilino"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="@string/renter"
+                android:textColorHint="@color/renter_nav_drawer_header"
+                app:startIconDrawable="@drawable/inqulino_icon"
+                app:startIconTint="@color/renter_nav_drawer_header">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/detalleDomicilioInputInquilino"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/renter_nav_drawer_header" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/detalleDomicilioPropietario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="right|center_vertical"
+                    android:text="@string/owner"
+                    android:textColor="@color/renter_nav_drawer_header"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/detalleDomicilioMapa"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_below="@+id/itemDetalleDomicilioLinearLayout"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="5dp" />
+
+        <LinearLayout
+            android:id="@+id/detalleEstadioLL2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detalleDomicilioMapa"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/detalleDomicilioGuardarBtn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/renter_nav_drawer"
+                android:text="@string/save" />
+
+            <Button
+                android:id="@+id/detalleDomicilioEditarBtn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:backgroundTint="@color/renter_nav_drawer"
+                android:text="@string/edit" />
+
+            <Button
+                android:id="@+id/detalleDomicilioBorrarBtn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:backgroundTint="@color/renter_nav_drawer"
+                android:text="@string/delete" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>
