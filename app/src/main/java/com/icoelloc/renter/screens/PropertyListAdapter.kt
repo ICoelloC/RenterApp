@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.icoelloc.renter.R
 import com.icoelloc.renter.objects.Property
+import com.icoelloc.renter.utils.CirculoTransformacion
 import com.squareup.picasso.Picasso
 import java.lang.Double.parseDouble
 import java.util.*
@@ -39,9 +40,14 @@ class PropertyListAdapter(
         cargarFotoDomicilio(listaDomicilios[position], holder)
         holder.itemNombre.text = listaDomicilios[position].nombre ?: ""
         cargarLocalidad(listaDomicilios[position], holder)
+        holder.itemTelefono.text = listaDomicilios[position].telefono
         holder.itemHabitaciones.text = listaDomicilios[position].habitaciones.toString()
         holder.itemBanios.text = listaDomicilios[position].banios.toString()
         holder.itemPrecio.text = listaDomicilios[position].precio.toString()
+        holder.itemFoto.setOnClickListener{
+            accionPrincipal(listaDomicilios[position])
+        }
+
     }
 
     fun removeItem(position: Int) {
@@ -70,10 +76,6 @@ class PropertyListAdapter(
         val geocoder = Geocoder(holder.itemView.context, Locale.getDefault())
         //si la latuitud o longuitud son nylas, no se puede geolocalizar
         if (domicilio.latitud != null || domicilio.longitud != null) {
-
-
-            //convertir cadena en double
-
             val addresses: List<Address>? =
                 geocoder.getFromLocation(
                     parseDouble(domicilio.latitud),
@@ -91,6 +93,7 @@ class PropertyListAdapter(
         if (domicilio.foto1 != "") {
             Picasso.get()
                 .load(domicilio.foto1)
+                .transform(CirculoTransformacion())
                 .resize(160, 160)
                 .into(holder.itemFoto)
         } else {
@@ -102,7 +105,7 @@ class PropertyListAdapter(
         holder.itemFoto.setImageBitmap(
             BitmapFactory.decodeResource(
                 holder.itemView.context.resources,
-                R.drawable.temp_image
+                R.drawable.renta
             )
         )
     }
@@ -114,6 +117,7 @@ class PropertyListAdapter(
         val itemBanios: TextView = itemView.findViewById(R.id.itemBanios)
         val itemHabitaciones: TextView = itemView.findViewById(R.id.itemHabitaciones)
         val itemPrecio: TextView = itemView.findViewById(R.id.itemPrecio)
+        val itemTelefono: TextView = itemView.findViewById(R.id.itemTelefono)
         var context: Context? = itemView.context
     }
 

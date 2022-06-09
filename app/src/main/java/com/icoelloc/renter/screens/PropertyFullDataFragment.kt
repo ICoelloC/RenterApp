@@ -15,12 +15,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -45,8 +47,10 @@ import com.icoelloc.renter.utils.MyApp
 import com.icoelloc.renter.utils.PhotosUtils
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_property_full_data.*
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.util.*
 
 class PropertyFullDataFragment(
@@ -68,6 +72,8 @@ class PropertyFullDataFragment(
     private var localizacion: Location? = null
     private var posicion: LatLng? = null
 
+    val REQUEST_IMAGE_CAPTURE = 1
+
     private val galeria = 1
     private val camara = 2
     lateinit var imagenURI: Uri
@@ -80,11 +86,6 @@ class PropertyFullDataFragment(
 
     companion object {
         private const val TAG = "Propiedad"
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -142,7 +143,7 @@ class PropertyFullDataFragment(
         detalleDomicilioPropietario.text = usuario.email
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
-        detalleDomicilioGuardarBtn.setOnClickListener { insertarEstadio() }
+        detalleDomicilioGuardarBtn.setOnClickListener { insertarDomicilio() }
         detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
 
     }
@@ -169,7 +170,6 @@ class PropertyFullDataFragment(
         detalleDomicilioBorrarBtn.visibility = View.GONE
         detalleDomicilioGuardarBtn.visibility = View.GONE
         detalleDomicilioFabCamara.visibility = View.GONE
-
         cargarFoto()
     }
 
@@ -178,18 +178,22 @@ class PropertyFullDataFragment(
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    if (domicilio?.foto1 != ""){
+                    if (domicilio?.foto1 != "") {
                         Picasso.get()
                             .load(domicilio?.foto1)
-                            .into(itemDetalleFoto1, object : com.squareup.picasso.Callback {
-                                override fun onSuccess() {
-                                    foto = (itemDetalleFoto1.drawable as BitmapDrawable).bitmap
-                                }
-                                override fun onError(ex: Exception?) {
-                                    Log.i(TAG, "Error: Descargar fotografia Picasso")
-                                }
-                            })
-                    }else{
+                            .into(
+                                itemDetalleDomicilioFoto1,
+                                object : com.squareup.picasso.Callback {
+                                    override fun onSuccess() {
+                                        foto =
+                                            (itemDetalleDomicilioFoto1.drawable as BitmapDrawable).bitmap
+                                    }
+
+                                    override fun onError(ex: Exception?) {
+                                        Log.i(TAG, "Error: Descargar fotografia Picasso")
+                                    }
+                                })
+                    } else {
                         imagenPorDefecto()
                     }
 
@@ -205,12 +209,22 @@ class PropertyFullDataFragment(
     }
 
     private fun imagenPorDefecto() {
-        itemDetalleFoto1.setImageBitmap(
+        itemDetalleDomicilioFoto1.setImageBitmap(
             BitmapFactory.decodeResource(
                 context?.resources,
-                R.drawable.temp_image
+                R.drawable.renta
             )
         )
+    }
+
+    private fun conversionFoto(): String {
+        var imagen = ""
+        val bitmap: Bitmap = (itemDetalleDomicilioFoto1.drawable).toBitmap()
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        imagen = Base64.encodeToString(data, Base64.DEFAULT)
+        return imagen
     }
 
     private fun initModoEliminar() {
@@ -234,12 +248,12 @@ class PropertyFullDataFragment(
         detalleDomicilioInputContacto.isEnabled = true
         detalleDomicilioFabCamara.visibility = View.VISIBLE
         detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
-        detalleDomicilioFabCamara.setOnClickListener { actualizarDomicilio() }
+        detalleDomicilioGuardarBtn.setOnClickListener { actualizarDomicilio() }
     }
 
-    private fun insertarEstadio() {
+    private fun insertarDomicilio() {
         if (comprobarFormulario()) {
-            alertaDialogo("Insertar Estadio", "¿Desea salvar este estadio?")
+            alertaDialogo("Insertar Domicilio", "¿Desea guardar este domicilio?")
         }
     }
 
@@ -249,53 +263,67 @@ class PropertyFullDataFragment(
             nombre = detalleDomicilioInputNombre.text.toString().trim(),
             latitud = posicion?.latitude.toString(),
             longitud = posicion?.longitude.toString(),
-            inquilino = "",
+            inquilino = detalleDomicilioInputInquilino.text.toString(),
             propietario = detalleDomicilioPropietario.text.toString().trim(),
             telefono = detalleDomicilioInputContacto.text.toString().trim(),
             banios = detalleDomicilioInputBanios.text.toString().trim().toInt(),
             habitaciones = detalleDomicilioInputHabitaciones.text.toString().trim().toInt(),
             metros = detalleDomicilioInputMetros.text.toString().trim().toInt(),
             precio = detalleDomicilioInputPrecio.text.toString().trim().toInt(),
-            foto1 = "",
-            foto2 = "",
-            foto3 = "",
-            foto4 = "",
-            foto5 = ""
+            foto1 = ""
         )
         fireStore.collection("Propiedades")
             .document(domicilio!!.id)
             .set(domicilio!!)
             .addOnSuccessListener {
                 Log.i(TAG, "Domicilio insertado con éxito con id: $domicilio")
+                cambiarVisibilidadBotones()
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error insertar Domicilio", e) }
         insertarFoto(domicilio!!.nombre)
+
     }
 
-    private fun insertarFoto(nombreDomicilio: String) {
+    private fun insertarFoto(nombre: String) {
         val storageRef = storage.reference
         val baos = ByteArrayOutputStream()
         foto.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         // no hace falta borrarla si no solo sobre escribirla
-        val estadioImagenRef = storageRef.child("domicilios/${nombreDomicilio}.jpg")
+        val estadioImagenRef = storageRef.child("images/${nombre}.jpg")
         val uploadTask = estadioImagenRef.putBytes(data)
-        uploadTask.addOnFailureListener{
+        uploadTask.addOnFailureListener {
             Log.i(TAG, "storage:failure: " + it.localizedMessage)
         }.addOnSuccessListener { taskSnapshot ->
             val downloadUti = taskSnapshot.metadata!!.reference!!.downloadUrl
             downloadUti.addOnSuccessListener {
                 val fotoRef = fireStore.collection("Propiedades").document(domicilio?.id.toString())
-                fotoRef.update("foto", it.toString())
+                fotoRef.update("foto1", it.toString())
                     .addOnSuccessListener {
                         volver()
                     }
-                    .addOnFailureListener { e->
+                    .addOnFailureListener { e ->
                         Log.w(TAG, "Error actualizar imagen", e)
                     }
             }
         }
     }
+
+    private fun cambiarVisibilidadBotones() {
+        detalleDomicilioInputNombre.isEnabled = false
+        detalleDomicilioInputContacto.isEnabled = false
+        detalleDomicilioInputMetros.isEnabled = false
+        detalleDomicilioInputPrecio.isEnabled = false
+        detalleDomicilioInputHabitaciones.isEnabled = false
+        detalleDomicilioInputBanios.isEnabled = false
+        detalleDomicilioInputInquilino.isEnabled = false
+        detalleDomicilioPropietario.isEnabled = false
+        detalleDomicilioEditarBtn.visibility = View.GONE
+        detalleDomicilioBorrarBtn.visibility = View.GONE
+        detalleDomicilioGuardarBtn.visibility = View.GONE
+        detalleDomicilioFabCamara.visibility = View.GONE
+    }
+
 
     private fun eliminarDomicilio() {
         alertaDialogo("Eliminar Estadio", "¿Quieres eliminarlo?")
@@ -319,6 +347,18 @@ class PropertyFullDataFragment(
         }
     }
 
+    fun StringToBitMap(image: String?): Bitmap? {
+        return try {
+            val encodeByte =
+                Base64.decode(image, Base64.DEFAULT)
+            val inputStream: InputStream = ByteArrayInputStream(encodeByte)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: java.lang.Exception) {
+            e.message
+            null
+        }
+    }
+
     private fun actualizar() {
         with(domicilio!!) {
             nombre = detalleDomicilioInputNombre.text.toString().trim()
@@ -331,18 +371,21 @@ class PropertyFullDataFragment(
             latitud = posicion?.latitude.toString()
             longitud = posicion?.longitude.toString()
         }
+
         fireStore.collection("Propiedades")
             .document(domicilio!!.id)
             .set(domicilio!!)
             .addOnSuccessListener {
-                Log.i(TAG, "Estadio actualizado con éxito con id: " + domicilio!!.id)
-                if (imagenURI.toString() != itemDetalleFoto1.toString()) {
+                Log.i(TAG, "Domicilio actualizado con éxito con id: " + domicilio!!.id)
+                if (imagenURI.toString() != itemDetalleDomicilioFoto1.toString()) {
                     actualizarFoto()
+                    cambiarVisibilidadBotones()
                 } else {
-                    Snackbar.make(requireView(), "¡Domicilio modificado!", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(requireView(), "¡Domicilio modificado!", Snackbar.LENGTH_LONG)
+                        .show()
                     volver()
                 }
-            }
+            }.addOnFailureListener { e -> Log.w(TAG, "Error actualizar lugar", e) }
     }
 
     private fun actualizarFoto() {
@@ -353,17 +396,17 @@ class PropertyFullDataFragment(
         // no hace falta borrarla si no solo sobre escribirla
         val estadioImagenRef = storageRef.child("images/${domicilio?.nombre}.jpg")
         val uploadTask = estadioImagenRef.putBytes(data)
-        uploadTask.addOnFailureListener{
+        uploadTask.addOnFailureListener {
             Log.i(TAG, "storage:failure: " + it.localizedMessage)
         }.addOnSuccessListener { taskSnapshot ->
             val downloadUti = taskSnapshot.metadata!!.reference!!.downloadUrl
             downloadUti.addOnSuccessListener {
                 val fotoRef = fireStore.collection("Propiedades").document(domicilio?.id.toString())
-                fotoRef.update("foto", it.toString())
+                fotoRef.update("foto1", it.toString())
                     .addOnSuccessListener {
                         volver()
                     }
-                    .addOnFailureListener { e->
+                    .addOnFailureListener { e ->
                         Log.w(TAG, "Error actualizar imagen", e)
                     }
             }
@@ -381,7 +424,8 @@ class PropertyFullDataFragment(
             sal = false
         }
         if (detalleDomicilioInputContacto.text?.isEmpty()!!) {
-            detalleDomicilioInputContacto.error = "El teléfono de contacto del domicilio no puede estar vacío"
+            detalleDomicilioInputContacto.error =
+                "El teléfono de contacto del domicilio no puede estar vacío"
             sal = false
         }
         if (detalleDomicilioInputMetros.text?.isEmpty()!!) {
@@ -393,16 +437,18 @@ class PropertyFullDataFragment(
             sal = false
         }
         if (detalleDomicilioInputBanios.text?.isEmpty()!!) {
-            detalleDomicilioInputBanios.error = "El número de baños del domicilio no puede estar vacío"
+            detalleDomicilioInputBanios.error =
+                "El número de baños del domicilio no puede estar vacío"
             sal = false
         }
         if (detalleDomicilioInputHabitaciones.text?.isEmpty()!!) {
-            detalleDomicilioInputHabitaciones.error = "El número de habitaciones del domicilio no puede estar vacío"
+            detalleDomicilioInputHabitaciones.error =
+                "El número de habitaciones del domicilio no puede estar vacío"
             sal = false
         }
 
         if (!this::foto.isInitialized) {
-            this.foto = (itemDetalleFoto1.drawable as BitmapDrawable).bitmap
+            this.foto = (itemDetalleDomicilioFoto1.drawable as BitmapDrawable).bitmap
             Toast.makeText(context, "La imagen no puede estar vacía", Toast.LENGTH_SHORT).show()
             sal = false
         }
@@ -607,6 +653,7 @@ class PropertyFullDataFragment(
         val nombre = PhotosUtils.crearNombreFoto(imagenPrefijo, imagenExtension)
         val fichero = PhotosUtils.salvarFoto(imagenDirectorio, nombre, requireContext())
         imagenURI = Uri.fromFile(fichero)
+        Log.i("FOTO", imagenURI.toString())
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenURI)
         Log.i("Camara", imagenURI.path.toString())
         startActivityForResult(intent, camara)
@@ -654,7 +701,7 @@ class PropertyFullDataFragment(
                     imagenURI = Uri.fromFile(fichero)
                     Toast.makeText(context, "¡Foto rescatada de la galería!", Toast.LENGTH_SHORT)
                         .show()
-                    itemDetalleFoto1.setImageBitmap(this.foto)
+                    itemDetalleDomicilioFoto1.setImageBitmap(this.foto)
 
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -673,7 +720,7 @@ class PropertyFullDataFragment(
                 }
                 Log.i("Camara", imagenURI.path.toString())
                 PhotosUtils.comprimirFoto(imagenURI.toFile(), this.foto, this.imagenCompresion)
-                itemDetalleFoto1.setImageBitmap(this.foto)
+                itemDetalleDomicilioFoto1.setImageBitmap(this.foto)
                 Toast.makeText(context, "¡Foto Salvada!", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -681,4 +728,6 @@ class PropertyFullDataFragment(
             }
         }
     }
+
+
 }

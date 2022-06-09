@@ -4,39 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="5dp"
     android:background="@color/white">
 
-    <ViewFlipper
-        android:id="@+id/itemDetallesImgsFlipper"
+    <ImageView
+        android:id="@+id/itemDetalleDomicilioFoto1"
         android:layout_width="match_parent"
-        android:layout_height="140dp">
-
-        <ImageView
-            android:id="@+id/itemDetalleFoto1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/renta"/>
-
-        <ImageView
-            android:id="@+id/itemDetalleFoto2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/temp_image"/>
-
-        <ImageView
-            android:id="@+id/itemDetalleFoto3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/temp_image"/>
-
-        <ImageView
-            android:id="@+id/itemDetalleFoto4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/temp_image"/>
-
-    </ViewFlipper>
+        android:layout_height="140dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/renta"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/detalleDomicilioFabCamara"
@@ -72,6 +47,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="10dp"
                 android:hint="@string/nombre"
+                app:endIconMode="clear_text"
                 android:textColorHint="@color/renter_nav_drawer_header">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -93,6 +69,8 @@
                 android:hint="@string/contacto"
                 android:textColorHint="@color/renter_nav_drawer_header"
                 app:startIconDrawable="@drawable/phone_icon"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/renter_nav_drawer"
                 app:startIconTint="@color/renter_nav_drawer_header">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -100,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:textColor="@color/renter_nav_drawer_header" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,6 +100,8 @@
                     android:hint="@string/superficie"
                     android:textColorHint="@color/renter_nav_drawer_header"
                     app:startIconDrawable="@drawable/area_icon"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/renter_nav_drawer"
                     app:startIconTint="@color/renter_nav_drawer_header">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -143,6 +123,8 @@
                     android:hint="@string/precio"
                     android:textColorHint="@color/renter_nav_drawer_header"
                     app:startIconDrawable="@drawable/euro_icon"
+                    app:endIconTint="@color/renter_nav_drawer"
+                    app:endIconMode="clear_text"
                     app:startIconTint="@color/renter_nav_drawer_header">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -173,6 +155,8 @@
                     android:hint="@string/habitaciones"
                     android:textColorHint="@color/renter_nav_drawer_header"
                     app:startIconDrawable="@drawable/bedroom_icon"
+                    app:endIconTint="@color/renter_nav_drawer"
+                    app:endIconMode="clear_text"
                     app:startIconTint="@color/renter_nav_drawer_header">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -192,6 +176,8 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     android:hint="@string/banios"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/renter_nav_drawer"
                     android:textColorHint="@color/renter_nav_drawer_header"
                     app:startIconDrawable="@drawable/bathroom_icon"
                     app:startIconTint="@color/renter_nav_drawer_header">
@@ -216,6 +202,8 @@
                 android:hint="@string/renter"
                 android:textColorHint="@color/renter_nav_drawer_header"
                 app:startIconDrawable="@drawable/inqulino_icon"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/renter_nav_drawer"
                 app:startIconTint="@color/renter_nav_drawer_header">
 
                 <com.google.android.material.textfield.TextInputEditText

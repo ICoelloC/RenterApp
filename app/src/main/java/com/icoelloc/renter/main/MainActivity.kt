@@ -1,14 +1,12 @@
 package com.icoelloc.renter.main
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -26,7 +24,6 @@ import com.icoelloc.renter.utils.CirculoTransformacion
 import com.icoelloc.renter.utils.MyApp
 import com.icoelloc.renter.utils.Utils
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.nav_header.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -50,6 +47,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+    }
+
     private fun configuracionNavDrawer() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -58,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_my_home,
+                R.id.nav_mi_domicilio,
                 R.id.nav_mis_propiedades,
                 R.id.nav_cerca_mi,
                 R.id.nav_buscar,
@@ -67,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         )
         navView.setupWithNavController(navController)
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
@@ -106,10 +112,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun comprobarGPS() {
-        if (Utils.isGPSAvaliable(applicationContext)) {
-            Toast.makeText(applicationContext, "Existe conexión a GPS", Toast.LENGTH_SHORT)
-                .show()
-        } else {
+        if (!Utils.isGPSAvaliable(applicationContext)) {
             val snackbar = Snackbar.make(
                 findViewById(android.R.id.content),
                 "Es necesaria una conexión a GPS",
@@ -125,10 +128,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun comprobarRed() {
-        if (Utils.isNetworkAvailable(applicationContext)) {
-            Toast.makeText(applicationContext, "Existe conexión a internet", Toast.LENGTH_SHORT)
-                .show()
-        } else {
+        if (!Utils.isNetworkAvailable(applicationContext)) {
             val snackbar = Snackbar.make(
                 findViewById(android.R.id.content),
                 "Es necesaria una conexión a internet",
