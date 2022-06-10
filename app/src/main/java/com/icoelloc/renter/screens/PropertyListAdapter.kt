@@ -39,8 +39,9 @@ class PropertyListAdapter(
     override fun onBindViewHolder(holder: DomiciliosViewHolder, position: Int) {
         cargarFotoDomicilio(listaDomicilios[position], holder)
         holder.itemNombre.text = listaDomicilios[position].nombre ?: ""
-        cargarLocalidad(listaDomicilios[position], holder)
+        holder.itemLocalidad.text =  listaDomicilios[position].localidad
         holder.itemTelefono.text = listaDomicilios[position].telefono
+        holder.itemLocalidad.text
         holder.itemHabitaciones.text = listaDomicilios[position].habitaciones.toString()
         holder.itemBanios.text = listaDomicilios[position].banios.toString()
         holder.itemPrecio.text = listaDomicilios[position].precio.toString()
@@ -69,24 +70,6 @@ class PropertyListAdapter(
 
     override fun getItemCount(): Int {
         return listaDomicilios.size
-    }
-
-
-    private fun cargarLocalidad(domicilio: Property, holder: DomiciliosViewHolder) {
-        val geocoder = Geocoder(holder.itemView.context, Locale.getDefault())
-        //si la latuitud o longuitud son nylas, no se puede geolocalizar
-        if (domicilio.latitud != null || domicilio.longitud != null) {
-            val addresses: List<Address>? =
-                geocoder.getFromLocation(
-                    parseDouble(domicilio.latitud),
-                    parseDouble(domicilio.longitud),
-                    1
-                )
-            if (addresses != null && addresses.isNotEmpty()) {
-                val address = addresses[0]
-                holder.itemLocalidad.text = address.locality
-            }
-        }
     }
 
     private fun cargarFotoDomicilio(domicilio: Property, holder: DomiciliosViewHolder) {

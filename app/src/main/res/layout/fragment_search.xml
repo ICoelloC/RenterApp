@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".screens.SearchFragment"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".screens.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginHorizontal="20dp">
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,105 +26,131 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/buscadorTextMetros"
+                    android:id="@+id/buscadorTextLocalidad"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="170dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
-                    android:hint="@string/min_superficie"
+                    android:hint="@string/localidad"
                     android:textColorHint="@color/renter_nav_drawer_header"
-                    app:startIconDrawable="@drawable/area_icon"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/renter_nav_drawer"
+                    app:startIconDrawable="@drawable/city_icon"
                     app:startIconTint="@color/renter_nav_drawer_header">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buscadorInputMetros"
-                        android:layout_width="170dp"
+                        android:id="@+id/buscadorInputLocalidad"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
-                        android:inputType="number"
                         android:textColor="@color/renter_nav_drawer_header" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/buscadorTextPrecio"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/max_precio"
-                    android:textColorHint="@color/renter_nav_drawer_header"
-                    app:startIconDrawable="@drawable/euro_icon"
-                    app:endIconTint="@color/renter_nav_drawer"
-                    app:endIconMode="clear_text"
-                    app:startIconTint="@color/renter_nav_drawer_header">
+                <!--
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/buscadorTextMetros"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                                    android:layout_width="170dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:hint="@string/min_superficie"
+                                    android:textColorHint="@color/renter_nav_drawer_header"
+                                    app:startIconDrawable="@drawable/area_icon"
+                                    app:endIconMode="clear_text"
+                                    app:endIconTint="@color/renter_nav_drawer"
+                                    app:startIconTint="@color/renter_nav_drawer_header">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buscadorInputPrecio"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:inputType="number"
-                        android:textColor="@color/renter_nav_drawer_header" />
-                </com.google.android.material.textfield.TextInputLayout>
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/buscadorInputMetros"
+                                        android:layout_width="170dp"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/white"
+                                        android:inputType="number"
+                                        android:textColor="@color/renter_nav_drawer_header" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/buscadorTextPrecio"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                                    android:layout_width="170dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:hint="@string/max_precio"
+                                    android:textColorHint="@color/renter_nav_drawer_header"
+                                    app:startIconDrawable="@drawable/euro_icon"
+                                    app:endIconTint="@color/renter_nav_drawer"
+                                    app:endIconMode="clear_text"
+                                    app:startIconTint="@color/renter_nav_drawer_header">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/buscadorInputPrecio"
+                                        android:layout_width="170dp"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/white"
+                                        android:inputType="number"
+                                        android:textColor="@color/renter_nav_drawer_header" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/buscadorTextHabitaciones"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/min_habitaciones"
-                    android:textColorHint="@color/renter_nav_drawer_header"
-                    app:startIconDrawable="@drawable/bedroom_icon"
-                    app:endIconTint="@color/renter_nav_drawer"
-                    app:endIconMode="clear_text"
-                    app:startIconTint="@color/renter_nav_drawer_header">
+                            </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buscadorInputHabitaciones"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:inputType="number"
-                        android:textColor="@color/renter_nav_drawer_header" />
-                </com.google.android.material.textfield.TextInputLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_horizontal"
+                                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/buscadorTextBanios"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/min_banios"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/renter_nav_drawer"
-                    android:textColorHint="@color/renter_nav_drawer_header"
-                    app:startIconDrawable="@drawable/bathroom_icon"
-                    app:startIconTint="@color/renter_nav_drawer_header">
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/buscadorTextHabitaciones"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                                    android:layout_width="170dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:hint="@string/min_habitaciones"
+                                    android:textColorHint="@color/renter_nav_drawer_header"
+                                    app:startIconDrawable="@drawable/bedroom_icon"
+                                    app:endIconTint="@color/renter_nav_drawer"
+                                    app:endIconMode="clear_text"
+                                    app:startIconTint="@color/renter_nav_drawer_header">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buscadorInputBanios"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:inputType="number"
-                        android:textColor="@color/renter_nav_drawer_header" />
-                </com.google.android.material.textfield.TextInputLayout>
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/buscadorInputHabitaciones"
+                                        android:layout_width="170dp"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/white"
+                                        android:inputType="number"
+                                        android:textColor="@color/renter_nav_drawer_header" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/buscadorTextBanios"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                                    android:layout_width="170dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:hint="@string/min_banios"
+                                    app:endIconMode="clear_text"
+                                    app:endIconTint="@color/renter_nav_drawer"
+                                    android:textColorHint="@color/renter_nav_drawer_header"
+                                    app:startIconDrawable="@drawable/bathroom_icon"
+                                    app:startIconTint="@color/renter_nav_drawer_header">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/buscadorInputBanios"
+                                        android:layout_width="170dp"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/white"
+                                        android:inputType="number"
+                                        android:textColor="@color/renter_nav_drawer_header" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                                -->
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -132,6 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:gravity="center_horizontal">
+
                 <Button
                     android:id="@+id/buscadorVerDisponiblesBTN"
                     android:layout_width="120dp"
@@ -139,6 +166,7 @@
                     android:layout_marginStart="15dp"
                     android:backgroundTint="@color/renter_nav_drawer"
                     android:text="@string/view_all" />
+
                 <Button
                     android:id="@+id/buscadorBuscarBTN"
                     android:layout_width="120dp"
@@ -156,7 +184,6 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             tools:listitem="@layout/item_property" />
-
 
 
     </LinearLayout>

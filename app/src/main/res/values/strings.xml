@@ -77,4 +77,6 @@
     <string name="max_precio">max €/month</string>
     <string name="temp_phone">temp_phone</string>
     <string name="view_all">View all</string>
+    <string name="phone">Phone:</string>
+    <string name="localidad">City</string>
 </resources>

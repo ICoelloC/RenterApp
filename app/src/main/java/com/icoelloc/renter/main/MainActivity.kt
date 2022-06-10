@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_cerca_mi,
                 R.id.nav_buscar,
                 R.id.nav_mi_perfil,
+                R.id.domicilio_Detalles
             ), drawerLayout
         )
         navView.setupWithNavController(navController)

@@ -30,7 +30,7 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
     private lateinit var fireStore: FirebaseFirestore
 
     private lateinit var mMap: GoogleMap
-    private lateinit var USUARIO: FirebaseUser
+    private lateinit var usuario: FirebaseUser
 
     companion object {
         private const val TAG = "MAPA"
@@ -48,11 +48,11 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         super.onViewCreated(view, savedInstanceState)
         auth = Firebase.auth
         fireStore = FirebaseFirestore.getInstance()
-        view.setOnTouchListener { view, motionEvent ->
+        view.setOnTouchListener { _, _ ->
             return@setOnTouchListener true
         }
 
-        this.USUARIO = auth.currentUser!!
+        this.usuario = auth.currentUser!!
         initUI()
     }
 
@@ -82,7 +82,7 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                     listaDomicilios.add(miLugar)
                 }
                 if (listaDomicilios.size > 0){
-                    procesarEstadios(listaDomicilios)
+                    procesarDomicilios(listaDomicilios)
                 }
             }
             .addOnFailureListener { exception ->
@@ -93,7 +93,7 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             }
     }
 
-    private fun procesarEstadios(listaDomicilios: MutableList<Property>) {
+    private fun procesarDomicilios(listaDomicilios: MutableList<Property>) {
         listaDomicilios.forEach{
             addMarcador(it)
         }
@@ -127,7 +127,9 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                                             .icon(BitmapDescriptorFactory.fromBitmap(pin))
                                     )
                                     // Le añado como tag el lugar para recuperarlo
-                                    marker.tag = domicilio
+                                    if (marker != null) {
+                                        marker.tag = domicilio
+                                    }
                                 }
 
                                 override fun onError(e: Exception) {
@@ -150,7 +152,9 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                                             .icon(BitmapDescriptorFactory.fromBitmap(pin))
                                     )
                                     // Le añado como tag el lugar para recuperarlo
-                                    marker.tag = domicilio
+                                    if (marker != null) {
+                                        marker.tag = domicilio
+                                    }
                                 }
 
                                 override fun onError(e: Exception) {

@@ -49,6 +49,16 @@ class MyPropertiesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my_properties, container, false)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        auth = Firebase.auth
+        fireStore = FirebaseFirestore.getInstance()
+        this.usuario = auth.currentUser!!
+        initUI()
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = Firebase.auth
@@ -320,7 +330,9 @@ class MyPropertiesFragment : Fragment() {
         id = doc["id"].toString(),
         nombre = doc["nombre"].toString(),
         latitud = doc["latitud"].toString(),
+        localidad = doc["localidad"].toString(),
         longitud = doc["longitud"].toString(),
+        telefono = doc["telefono"].toString(),
         inquilino = doc["inquilino"].toString(),
         propietario = doc["propietario"].toString(),
         banios = doc["banios"]?.toString()?.toInt() ?: 0,

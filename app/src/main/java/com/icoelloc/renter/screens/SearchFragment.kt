@@ -3,6 +3,8 @@ package com.icoelloc.renter.screens
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -41,7 +43,6 @@ class SearchFragment : Fragment() {
         private const val TAG = "MisDomiciliosFragment"
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,13 +70,32 @@ class SearchFragment : Fragment() {
         buscadorBuscarBTN.setOnClickListener {
             buscarDomiciliosPorParametro()
         }
+/*
+        buscadorInputLocalidad.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+                buscarDomiciliosPorParametro()
+
+            }
+        })
+        
+ */
     }
 
     private fun mostrarTodosLosDomiciliosDisponibles() {
-        buscadorInputMetros.setText("")
+        /*buscadorInputMetros.setText("")
         buscadorInputPrecio.setText("")
         buscadorInputHabitaciones.setText("")
-        buscadorInputBanios.setText("")
+        buscadorInputBanios.setText("")*/
+        buscadorInputLocalidad.setText("")
         domicilios.clear()
         domiciliosAdapter = PropertyListAdapter(domicilios) {
             eventoClicFila(it)
@@ -102,6 +122,11 @@ class SearchFragment : Fragment() {
 
     private fun comprobarFormulario(): Boolean {
         var sal = true
+        if (buscadorInputLocalidad.text?.isEmpty()!!) {
+            buscadorInputLocalidad.error = "Introduzca la localidad"
+            sal = false
+        }
+        /*
         if (buscadorInputMetros.text?.isEmpty()!!) {
             buscadorInputMetros.error = "Introduzca el mínimo de metros cuadrados"
             sal = false
@@ -118,6 +143,7 @@ class SearchFragment : Fragment() {
             buscadorInputHabitaciones.error = "Introduzca el mínimo número de habitaciones"
             sal = false
         }
+        */
         return sal
     }
 
@@ -128,11 +154,14 @@ class SearchFragment : Fragment() {
                 eventoClicFila(it)
             }
             domiciliosSearchRecycler.adapter = domiciliosAdapter
-            val query = fireStore.collection("Propiedades").whereEqualTo("inquilino", "")
-                .whereEqualTo("precio", buscadorInputPrecio.text.toString().toInt())
+            var localidad = buscadorInputLocalidad.text.toString()
+            val query = fireStore.collection("Propiedades").whereEqualTo("inquilino", "").whereGreaterThanOrEqualTo("localidad", localidad)
+            /*
+            query.whereLessThanOrEqualTo("precio", buscadorInputPrecio.text.toString().toInt())
                 .whereEqualTo("metros", buscadorInputMetros.text.toString().trim().toInt())
                 .whereEqualTo("habitaciones", buscadorInputHabitaciones.text.toString().trim().toInt())
                 .whereEqualTo("banios", buscadorInputBanios.text.toString().trim())
+             */
             query.get().addOnSuccessListener { value ->
                 for (doc in value!!.documentChanges) {
                     Log.i("Resultado = ", doc.document.data.toString())
@@ -246,6 +275,7 @@ class SearchFragment : Fragment() {
         nombre = doc["nombre"].toString(),
         latitud = doc["latitud"].toString(),
         longitud = doc["longitud"].toString(),
+        localidad = doc["localidad"].toString(),
         inquilino = doc["inquilino"].toString(),
         propietario = doc["propietario"].toString(),
         banios = doc["banios"]?.toString()?.toInt() ?: 0,

@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_my_properties" />
 
     <fragment
-        android:id="@+id/domcilioDetalles"
+        android:id="@+id/domicilio_Detalles"
         android:name="com.icoelloc.renter.screens.PropertyFullDataFragment"
         android:label="@string/properties_derails"
         tools:layout="@layout/fragment_property_full_data" >

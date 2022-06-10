@@ -9,6 +9,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Build
@@ -38,6 +40,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.icoelloc.renter.R
@@ -47,10 +50,12 @@ import com.icoelloc.renter.utils.MyApp
 import com.icoelloc.renter.utils.PhotosUtils
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_property_full_data.*
+import kotlinx.android.synthetic.main.fragment_search.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.lang.Double
 import java.util.*
 
 class PropertyFullDataFragment(
@@ -71,8 +76,6 @@ class PropertyFullDataFragment(
     private var marcadorTouch: Marker? = null
     private var localizacion: Location? = null
     private var posicion: LatLng? = null
-
-    val REQUEST_IMAGE_CAPTURE = 1
 
     private val galeria = 1
     private val camara = 2
@@ -143,6 +146,9 @@ class PropertyFullDataFragment(
         detalleDomicilioPropietario.text = usuario.email
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
+        detalleDomicilioPropietario.visibility = View.GONE
+        icono_telefono.visibility = View.GONE
+        detalleDomicilioPropietarioTelefono.visibility = View.GONE
         detalleDomicilioGuardarBtn.setOnClickListener { insertarDomicilio() }
         detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
 
@@ -166,11 +172,28 @@ class PropertyFullDataFragment(
         detalleDomicilioInputInquilino.isEnabled = false
         detalleDomicilioPropietario.text = domicilio?.propietario
         detalleDomicilioPropietario.isEnabled = false
+        detalleDomicilioPropietario.visibility = View.GONE
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
         detalleDomicilioGuardarBtn.visibility = View.GONE
         detalleDomicilioFabCamara.visibility = View.GONE
+        if (domicilio?.telefono != null) {
+            detalleDomicilioPropietarioTelefono.text = domicilio?.telefono
+            detalleDomicilioPropietarioTelefono.setOnClickListener {
+                llamarPorTelefono()
+            }
+        }
         cargarFoto()
+
+        detalleDomicilioEditarBtn.setOnClickListener { insertarDomicilio() }
+    }
+
+    private fun llamarPorTelefono() {
+        val i = Intent(
+            Intent.ACTION_CALL,
+            Uri.parse("tel:" + domicilio?.telefono)
+        )
+        startActivity(i)
     }
 
     private fun cargarFoto() {
@@ -217,16 +240,6 @@ class PropertyFullDataFragment(
         )
     }
 
-    private fun conversionFoto(): String {
-        var imagen = ""
-        val bitmap: Bitmap = (itemDetalleDomicilioFoto1.drawable).toBitmap()
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-        imagen = Base64.encodeToString(data, Base64.DEFAULT)
-        return imagen
-    }
-
     private fun initModoEliminar() {
         Log.i(TAG, "Modo Eliminar")
         initModoVisualizar()
@@ -246,7 +259,10 @@ class PropertyFullDataFragment(
         detalleDomicilioInputBanios.isEnabled = true
         detalleDomicilioInputInquilino.isEnabled = true
         detalleDomicilioInputContacto.isEnabled = true
+        detalleDomicilioPropietario.visibility = View.GONE
         detalleDomicilioFabCamara.visibility = View.VISIBLE
+        icono_telefono.visibility = View.GONE
+        detalleDomicilioPropietarioTelefono.visibility = View.GONE
         detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
         detalleDomicilioGuardarBtn.setOnClickListener { actualizarDomicilio() }
     }
@@ -262,6 +278,7 @@ class PropertyFullDataFragment(
             id = UUID.randomUUID().toString(),
             nombre = detalleDomicilioInputNombre.text.toString().trim(),
             latitud = posicion?.latitude.toString(),
+            localidad = cargarLocalidad(posicion?.latitude.toString() , posicion?.longitude.toString()),
             longitud = posicion?.longitude.toString(),
             inquilino = detalleDomicilioInputInquilino.text.toString(),
             propietario = detalleDomicilioPropietario.text.toString().trim(),
@@ -272,6 +289,7 @@ class PropertyFullDataFragment(
             precio = detalleDomicilioInputPrecio.text.toString().trim().toInt(),
             foto1 = ""
         )
+
         fireStore.collection("Propiedades")
             .document(domicilio!!.id)
             .set(domicilio!!)
@@ -347,18 +365,6 @@ class PropertyFullDataFragment(
         }
     }
 
-    fun StringToBitMap(image: String?): Bitmap? {
-        return try {
-            val encodeByte =
-                Base64.decode(image, Base64.DEFAULT)
-            val inputStream: InputStream = ByteArrayInputStream(encodeByte)
-            BitmapFactory.decodeStream(inputStream)
-        } catch (e: java.lang.Exception) {
-            e.message
-            null
-        }
-    }
-
     private fun actualizar() {
         with(domicilio!!) {
             nombre = detalleDomicilioInputNombre.text.toString().trim()
@@ -374,7 +380,7 @@ class PropertyFullDataFragment(
 
         fireStore.collection("Propiedades")
             .document(domicilio!!.id)
-            .set(domicilio!!)
+            .set(domicilio!!, SetOptions.merge())
             .addOnSuccessListener {
                 Log.i(TAG, "Domicilio actualizado con éxito con id: " + domicilio!!.id)
                 if (imagenURI.toString() != itemDetalleDomicilioFoto1.toString()) {
@@ -411,6 +417,28 @@ class PropertyFullDataFragment(
                     }
             }
         }
+    }
+
+    private fun cargarLocalidad(
+        latitud: String,
+        longitud: String
+    ): String {
+        var localidad = ""
+        val geocoder = Geocoder(context, Locale.getDefault())
+        //si la latuitud o longuitud son nylas, no se puede geolocalizar
+        if (latitud != null || longitud != null) {
+            val addresses: List<Address>? =
+                geocoder.getFromLocation(
+                    Double.parseDouble(latitud),
+                    Double.parseDouble(longitud),
+                    1
+                )
+            if (addresses != null && addresses.isNotEmpty()) {
+                val address = addresses[0]
+                localidad = address.locality
+            }
+        }
+        return localidad
     }
 
     private fun volver() {
