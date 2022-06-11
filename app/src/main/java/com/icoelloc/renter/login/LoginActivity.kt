@@ -48,6 +48,19 @@ class LoginActivity : AppCompatActivity() {
         Shared.context = this
         initButtons()
 
+        procesarSesiones()
+    }
+
+    private fun procesarSesiones() {
+        // Vemos si hay sesión
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            Log.i("Login", "SÍ hay sesión activa")
+            Toast.makeText(baseContext, "Auth: Sesión activa", Toast.LENGTH_SHORT).show()
+            abrirMain()
+        } else {
+            Log.i("Login", "NO hay sesión activa")
+        }
     }
 
     private fun initButtons() {

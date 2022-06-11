@@ -1,12 +1,15 @@
 package com.icoelloc.renter.main
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
@@ -21,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.icoelloc.renter.R
+import com.icoelloc.renter.login.LoginActivity
 import com.icoelloc.renter.utils.CirculoTransformacion
 import com.icoelloc.renter.utils.MyApp
 import com.icoelloc.renter.utils.Utils
@@ -106,6 +110,36 @@ class MainActivity : AppCompatActivity() {
                 .transform(CirculoTransformacion())
                 .into(navUserImage)
         }
+
+        navUserImage.setOnClickListener{
+            salirSesion()
+        }
+    }
+
+    private fun salirSesion() {
+        Log.i("Sesion", "Saliendo...")
+        AlertDialog.Builder(this)
+            .setIcon(R.drawable.exit_icon)
+            .setTitle("Cerrar sesión actual")
+            .setMessage("¿Desea salir de la sesión actual?")
+            .setPositiveButton(getString(R.string.accept)) { dialog, which -> cerrarSesion() }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    /**
+     * Cerra la sesión Actual
+     */
+    private fun cerrarSesion() {
+        // Cerramos en Firebase
+        auth.signOut()
+        Log.i("Sesion", "sesionDelete ok")
+        Toast.makeText(applicationContext, "Sesión cerrada", Toast.LENGTH_SHORT)
+            .show()
+        // Y vamos a login
+        val login = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(login)
+        finish()
     }
 
     private fun comprobarConexion() {
