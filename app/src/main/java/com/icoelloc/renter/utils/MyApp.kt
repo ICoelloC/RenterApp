@@ -13,8 +13,8 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 class MyApp : Application() {
 
-    var PERMISSIONSCAMERA = false
-    var PERMISSIONSGALLERY = false
+    var permissionCamera = false
+    var permissionGallery = false
     var PERMISSIONSLOCATION = false
 
     var APP_PERMISOS = false
@@ -37,6 +37,7 @@ class MyApp : Application() {
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.INTERNET,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.CALL_PHONE
             )
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
@@ -70,11 +71,11 @@ class MyApp : Application() {
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                     if (report.areAllPermissionsGranted()) {
-                        PERMISSIONSGALLERY = true
+                        permissionGallery = true
                     }
                     // COMPROBAMOS QUE NO HAY PERMISOS SIN ACEPTAR
                     if (report.isAnyPermissionPermanentlyDenied) {
-                        PERMISSIONSGALLERY = false
+                        permissionGallery = false
                     }
                 }//NOTIFICAR DE LOS PERMISOS
 
@@ -93,7 +94,7 @@ class MyApp : Application() {
             }
             .onSameThread()
             .check()
-        return PERMISSIONSGALLERY
+        return permissionGallery
     }
 
     fun initPermissesCamera(): Boolean {
@@ -107,11 +108,11 @@ class MyApp : Application() {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                     if (report.areAllPermissionsGranted()) {
                         Log.i("util", "todos permisos camara")
-                        PERMISSIONSCAMERA = true
+                        permissionCamera = true
                     }
                     // COMPROBAMOS QUE NO HAY PERMISOS SIN ACEPTAR
                     if (report.isAnyPermissionPermanentlyDenied) {
-                        PERMISSIONSCAMERA = false
+                        permissionCamera = false
                     }
                 }//NOTIFICAR DE LOS PERMISOS
 
@@ -130,7 +131,7 @@ class MyApp : Application() {
             }
             .onSameThread()
             .check()
-        return PERMISSIONSCAMERA
+        return permissionCamera
     }
 
 }

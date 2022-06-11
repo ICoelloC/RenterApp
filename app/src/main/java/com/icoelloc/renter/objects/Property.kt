@@ -8,6 +8,7 @@ data class Property(
     var latitud: String = "",
     var longitud: String = "",
     var inquilino: String = "",
+    var localidad: String = "",
     var propietario: String = "",
     var telefono: String = "",
     var banios: Int = 0,
@@ -25,6 +26,7 @@ data class Property(
         id: String,
         nombre: String,
         latitud: String,
+        localidad: String,
         longitud: String,
         inquilino: String,
         propietario: String,
@@ -43,6 +45,7 @@ data class Property(
         id,
         nombre,
         latitud,
+        localidad,
         longitud,
         inquilino,
         propietario,
@@ -59,7 +62,7 @@ data class Property(
     )
 
     override fun toString(): String {
-        return "Lugar(id='$id', nombre='$nombre',latitud='$latitud', longitud='$longitud', inquilino='$inquilino', propietario=$propietario, telefono=$telefono, banios=$banios, habitaciones='$habitaciones', metros='$metros', precio='$precio', foto1='$foto1', foto2='$foto2', foto3='$foto3', foto4='$foto4', foto5='$foto5')"
+        return "Lugar(id='$id', nombre='$nombre' localidad='$localidad',latitud='$latitud', longitud='$longitud', inquilino='$inquilino', propietario=$propietario, telefono=$telefono, banios=$banios, habitaciones='$habitaciones', metros='$metros', precio='$precio', foto1='$foto1', foto2='$foto2', foto3='$foto3', foto4='$foto4', foto5='$foto5')"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -68,6 +71,7 @@ data class Property(
         if (id != other.id) return false
         if (nombre != other.nombre) return false
         if (latitud != other.latitud) return false
+        if (localidad != other.localidad) return false
         if (longitud != other.longitud) return false
         if (inquilino != other.inquilino) return false
         if (propietario != other.propietario) return false
@@ -87,11 +91,12 @@ data class Property(
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + latitud.hashCode()
+        result = 31 * result + localidad.hashCode()
         result = 31 * result + longitud.hashCode()
         result = 31 * result + inquilino.hashCode()
         result = 31 * result + propietario.hashCode()
         result = 31 * result + telefono.hashCode()
-        result = 31 * result + banios
+        result = 31 * result + banios.hashCode()
         result = 31 * result + habitaciones.hashCode()
         result = 31 * result + metros.hashCode()
         result = 31 * result + precio.hashCode()

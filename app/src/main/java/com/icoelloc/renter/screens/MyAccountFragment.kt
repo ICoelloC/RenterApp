@@ -86,14 +86,14 @@ class MyAccountFragment : Fragment() {
     private fun cargarNumPropiedades(email: String?) {
 
 
-        firebaseFirestore.collection("Propiedades").whereEqualTo("Propietario", email).get()
+        firebaseFirestore.collection("Propiedades").whereEqualTo("propietario", email).get()
             .addOnSuccessListener {
                 numPropiedades.text = it.size().toString()
             }
     }
 
     private fun cargarNumPropiedadesAlquiladas(email: String?) {
-        firebaseFirestore.collection("Propiedades").whereEqualTo("Inquilino", email).get()
+        firebaseFirestore.collection("Propiedades").whereEqualTo("inquilino", email).get()
             .addOnSuccessListener {
                 numAlquileres.text = it.size().toString()
             }

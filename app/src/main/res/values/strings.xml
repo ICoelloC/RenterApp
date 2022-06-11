@@ -71,4 +71,13 @@
     <string name="accept">accept</string>
     <string name="cancel">cancel</string>
     <string name="addhome">addHome</string>
+    <string name="min_banios">Min. Bathrooms</string>
+    <string name="min_habitaciones">Min. Bedrooms</string>
+    <string name="min_superficie">Min. m2</string>
+    <string name="max_precio">max €/month</string>
+    <string name="temp_phone">temp_phone</string>
+    <string name="view_all">View all</string>
+    <string name="phone">Phone:</string>
+    <string name="localidad">City</string>
+    <string name="temp_disponibility">temp_disponibility</string>
 </resources>

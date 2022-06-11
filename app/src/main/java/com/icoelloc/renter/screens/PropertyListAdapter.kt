@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.icoelloc.renter.R
 import com.icoelloc.renter.objects.Property
+import com.icoelloc.renter.utils.CirculoTransformacion
 import com.squareup.picasso.Picasso
 import java.lang.Double.parseDouble
 import java.util.*
@@ -38,10 +39,23 @@ class PropertyListAdapter(
     override fun onBindViewHolder(holder: DomiciliosViewHolder, position: Int) {
         cargarFotoDomicilio(listaDomicilios[position], holder)
         holder.itemNombre.text = listaDomicilios[position].nombre ?: ""
-        cargarLocalidad(listaDomicilios[position], holder)
+        holder.itemLocalidad.text = listaDomicilios[position].localidad
+        holder.itemTelefono.text = listaDomicilios[position].telefono
+        holder.itemLocalidad.text
+
+        if (listaDomicilios[position].inquilino == "") {
+            holder.itemDisponibilidad.text = "Disponible"
+        } else {
+            holder.itemDisponibilidad.text = "Alquilada"
+        }
+
         holder.itemHabitaciones.text = listaDomicilios[position].habitaciones.toString()
         holder.itemBanios.text = listaDomicilios[position].banios.toString()
         holder.itemPrecio.text = listaDomicilios[position].precio.toString()
+        holder.itemFoto.setOnClickListener {
+            accionPrincipal(listaDomicilios[position])
+        }
+
     }
 
     fun removeItem(position: Int) {
@@ -65,32 +79,11 @@ class PropertyListAdapter(
         return listaDomicilios.size
     }
 
-
-    private fun cargarLocalidad(domicilio: Property, holder: DomiciliosViewHolder) {
-        val geocoder = Geocoder(holder.itemView.context, Locale.getDefault())
-        //si la latuitud o longuitud son nylas, no se puede geolocalizar
-        if (domicilio.latitud != null || domicilio.longitud != null) {
-
-
-            //convertir cadena en double
-
-            val addresses: List<Address>? =
-                geocoder.getFromLocation(
-                    parseDouble(domicilio.latitud),
-                    parseDouble(domicilio.longitud),
-                    1
-                )
-            if (addresses != null && addresses.isNotEmpty()) {
-                val address = addresses[0]
-                holder.itemLocalidad.text = address.locality
-            }
-        }
-    }
-
     private fun cargarFotoDomicilio(domicilio: Property, holder: DomiciliosViewHolder) {
         if (domicilio.foto1 != "") {
             Picasso.get()
                 .load(domicilio.foto1)
+                .transform(CirculoTransformacion())
                 .resize(160, 160)
                 .into(holder.itemFoto)
         } else {
@@ -102,7 +95,7 @@ class PropertyListAdapter(
         holder.itemFoto.setImageBitmap(
             BitmapFactory.decodeResource(
                 holder.itemView.context.resources,
-                R.drawable.temp_image
+                R.drawable.renta
             )
         )
     }
@@ -114,6 +107,8 @@ class PropertyListAdapter(
         val itemBanios: TextView = itemView.findViewById(R.id.itemBanios)
         val itemHabitaciones: TextView = itemView.findViewById(R.id.itemHabitaciones)
         val itemPrecio: TextView = itemView.findViewById(R.id.itemPrecio)
+        val itemDisponibilidad: TextView = itemView.findViewById(R.id.itemDisponibilidad)
+        val itemTelefono: TextView = itemView.findViewById(R.id.itemTelefono)
         var context: Context? = itemView.context
     }
 

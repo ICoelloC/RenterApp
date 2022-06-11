@@ -1,5 +1,6 @@
 package com.icoelloc.renter.screens
 
+import android.app.AlertDialog
 import android.graphics.*
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,8 @@ import com.icoelloc.renter.R
 import com.icoelloc.renter.objects.Property
 import com.icoelloc.renter.utils.Modo
 import kotlinx.android.synthetic.main.fragment_my_home.*
+import kotlinx.android.synthetic.main.fragment_my_home.domiciliosRecycler
+import kotlinx.android.synthetic.main.fragment_my_properties.*
 
 
 class MyPropertiesFragment : Fragment() {
@@ -43,8 +46,18 @@ class MyPropertiesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_my_home, container, false)
+        return inflater.inflate(R.layout.fragment_my_properties, container, false)
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        auth = Firebase.auth
+        fireStore = FirebaseFirestore.getInstance()
+        this.usuario = auth.currentUser!!
+        initUI()
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,9 +76,11 @@ class MyPropertiesFragment : Fragment() {
     }
 
     private fun iniciarSwipeRefresh() {
-        domiciliosSwipeRefresh.setColorSchemeColors(
-            resources.getColor(R.color.renter_nav_drawer)
-        )
+        misPropSwipeRefresh.setColorSchemeResources(R.color.renter_nav_drawer_header)
+        misPropSwipeRefresh.setProgressBackgroundColorSchemeResource(R.color.white)
+        misPropSwipeRefresh.setOnRefreshListener {
+            cargarDomicilios()
+        }
     }
 
     private fun iniciarSwipeHorizontal() {
@@ -192,13 +207,43 @@ class MyPropertiesFragment : Fragment() {
     }
 
     private fun borrarElemento(position: Int) {
-        Log.i(TAG, "Borrando el elemento pos: $position")
-        if (domicilios[position].propietario == auth.currentUser?.email && domicilios[position].inquilino == "") {
-            abrirDetalle(domicilios[position], Modo.ELIMINAR)
-        } else {
-            Toast.makeText(requireContext(), "No tienes permiso para borrarlo", Toast.LENGTH_LONG)
-                .show()
+
+        val builder = AlertDialog.Builder(context)
+        with(builder)
+        {
+            setIcon(R.drawable.renta)
+            setTitle("Eliminar Propiedades")
+            setMessage("Desea eliminar la propiedad")
+            setPositiveButton(R.string.accept) { _, _ ->
+                if (domicilios[position].propietario == auth.currentUser?.email && domicilios[position].inquilino == "") {
+
+                    fireStore.collection("Propiedades")
+                        .document(domicilios[position].id)
+                        .delete()
+                        .addOnSuccessListener {
+                            Log.i("ELIMINAR", "Domicilio eliminado con éxito")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("ELIMINAR", "Error writing document", e)
+                        }
+
+                    //abrirDetalle(domicilios[position], Modo.ELIMINAR)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "No puedes eliminar tu propiedad si tienes un inqulino",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+            setNegativeButton(R.string.cancel, null)
+            // setNeutralButton("Maybe", neutralButtonClick)
+            show()
         }
+
+        Log.i(TAG, "Borrando el elemento pos: $position")
+
     }
 
     private fun eliminarItemLista(position: Int) {
@@ -230,12 +275,12 @@ class MyPropertiesFragment : Fragment() {
 
     private fun cargarDomicilios() {
         domicilios.clear()
-        domiciliosSwipeRefresh.isRefreshing = true
+        misPropSwipeRefresh.isRefreshing = true
         domiciliosAdapter = PropertyListAdapter(domicilios) {
             eventoClicFila(it)
         }
         domiciliosRecycler.adapter = domiciliosAdapter
-        fireStore.collection("Propiedades").whereEqualTo("Propuietario", usuario.email)
+        fireStore.collection("Propiedades").whereEqualTo("propietario", usuario.email)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Toast.makeText(
@@ -245,7 +290,7 @@ class MyPropertiesFragment : Fragment() {
                     ).show()
                     return@addSnapshotListener
                 }
-                domiciliosSwipeRefresh.isRefreshing = false
+                misPropSwipeRefresh.isRefreshing = false
                 for (doc in value!!.documentChanges) {
                     when (doc.type) {
                         // Documento agregado
@@ -285,7 +330,9 @@ class MyPropertiesFragment : Fragment() {
         id = doc["id"].toString(),
         nombre = doc["nombre"].toString(),
         latitud = doc["latitud"].toString(),
+        localidad = doc["localidad"].toString(),
         longitud = doc["longitud"].toString(),
+        telefono = doc["telefono"].toString(),
         inquilino = doc["inquilino"].toString(),
         propietario = doc["propietario"].toString(),
         banios = doc["banios"]?.toString()?.toInt() ?: 0,
@@ -293,10 +340,6 @@ class MyPropertiesFragment : Fragment() {
         metros = doc["metros"]?.toString()?.toInt() ?: 0,
         precio = doc["precio"]?.toString()?.toInt() ?: 0,
         foto1 = doc["foto1"].toString(),
-        foto2 = doc["foto2"].toString(),
-        foto3 = doc["foto3"].toString(),
-        foto4 = doc["foto4"].toString(),
-        foto5 = doc["foto5"].toString()
     )
 
     private fun insertarDocumento(doc: MutableMap<String, Any>) {
