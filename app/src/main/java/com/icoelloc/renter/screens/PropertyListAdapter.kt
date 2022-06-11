@@ -39,13 +39,20 @@ class PropertyListAdapter(
     override fun onBindViewHolder(holder: DomiciliosViewHolder, position: Int) {
         cargarFotoDomicilio(listaDomicilios[position], holder)
         holder.itemNombre.text = listaDomicilios[position].nombre ?: ""
-        holder.itemLocalidad.text =  listaDomicilios[position].localidad
+        holder.itemLocalidad.text = listaDomicilios[position].localidad
         holder.itemTelefono.text = listaDomicilios[position].telefono
         holder.itemLocalidad.text
+
+        if (listaDomicilios[position].inquilino == "") {
+            holder.itemDisponibilidad.text = "Disponible"
+        } else {
+            holder.itemDisponibilidad.text = "Alquilada"
+        }
+
         holder.itemHabitaciones.text = listaDomicilios[position].habitaciones.toString()
         holder.itemBanios.text = listaDomicilios[position].banios.toString()
         holder.itemPrecio.text = listaDomicilios[position].precio.toString()
-        holder.itemFoto.setOnClickListener{
+        holder.itemFoto.setOnClickListener {
             accionPrincipal(listaDomicilios[position])
         }
 
@@ -100,6 +107,7 @@ class PropertyListAdapter(
         val itemBanios: TextView = itemView.findViewById(R.id.itemBanios)
         val itemHabitaciones: TextView = itemView.findViewById(R.id.itemHabitaciones)
         val itemPrecio: TextView = itemView.findViewById(R.id.itemPrecio)
+        val itemDisponibilidad: TextView = itemView.findViewById(R.id.itemDisponibilidad)
         val itemTelefono: TextView = itemView.findViewById(R.id.itemTelefono)
         var context: Context? = itemView.context
     }

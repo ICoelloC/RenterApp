@@ -70,24 +70,55 @@ class SearchFragment : Fragment() {
         buscadorBuscarBTN.setOnClickListener {
             buscarDomiciliosPorParametro()
         }
-/*
+
         buscadorInputLocalidad.addTextChangedListener(object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable) {}
-
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun afterTextChanged(s: Editable) {
+                Log.i(
+                    "Buscador",
+                    "El texto ha cambiado a: " + buscadorInputLocalidad.text.toString()
+                )
+                domicilios.clear()
+                domiciliosAdapter = PropertyListAdapter(domicilios) {
+                    eventoClicFila(it)
+                }
+                domiciliosSearchRecycler.adapter = domiciliosAdapter
+                fireStore.collection("Propiedades")
+                    .whereGreaterThanOrEqualTo("localidad", buscadorInputLocalidad.text.toString())
+                    .get().addOnSuccessListener { value ->
+                        for (doc in value!!.documentChanges) {
+                            Log.i("Resultado = ", doc.document.data.toString())
+                            when (doc.type) {
+                                DocumentChange.Type.ADDED -> {
+                                    insertarDocumento(doc.document.data)
+                                }
+                                DocumentChange.Type.MODIFIED -> {
+                                    modificarDocumento(doc.document.data)
+                                }
+                                DocumentChange.Type.REMOVED -> {
+                                    eliminarDocumento(doc.document.data)
+                                }
+                            }
+                        }
+                    }
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
 
-                buscarDomiciliosPorParametro()
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+
 
             }
         })
-        
- */
+
+
     }
 
     private fun mostrarTodosLosDomiciliosDisponibles() {
@@ -148,14 +179,15 @@ class SearchFragment : Fragment() {
     }
 
     private fun buscarDomiciliosPorParametro() {
-        if (comprobarFormulario()){
+        if (comprobarFormulario()) {
             domicilios.clear()
             domiciliosAdapter = PropertyListAdapter(domicilios) {
                 eventoClicFila(it)
             }
             domiciliosSearchRecycler.adapter = domiciliosAdapter
             var localidad = buscadorInputLocalidad.text.toString()
-            val query = fireStore.collection("Propiedades").whereEqualTo("inquilino", "").whereGreaterThanOrEqualTo("localidad", localidad)
+            val query = fireStore.collection("Propiedades").whereEqualTo("inquilino", "")
+                .whereGreaterThanOrEqualTo("localidad", localidad)
             /*
             query.whereLessThanOrEqualTo("precio", buscadorInputPrecio.text.toString().toInt())
                 .whereEqualTo("metros", buscadorInputMetros.text.toString().trim().toInt())
