@@ -1,22 +1,11 @@
 package com.icoelloc.renter.objects
 
-import java.util.*
-
 data class User(
     var id: String = "",
     var nombre: String = "",
     var email: String = "",
     var image: String = ""
 ) {
-
-    constructor(
-        id: String,
-        nombre: String,
-        email: String,
-        image: String,
-        fechaCreacion: Date,
-    ) : this(id, nombre, email, image) {
-    }
 
     override fun toString(): String {
         return "User(nombre='$nombre', email='$email', image='$image')"

@@ -1,6 +1,5 @@
 package com.icoelloc.renter.screens
 
-import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,9 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -32,7 +29,6 @@ class MyHomeFragment : Fragment() {
     private var domicilios = mutableListOf<Property>()
 
     private lateinit var domiciliosAdapter: PropertyListAdapter
-    private var paintSweep = Paint()
     private lateinit var usuario: FirebaseUser
 
     companion object {
@@ -96,11 +92,11 @@ class MyHomeFragment : Fragment() {
     }
 
     private fun abrirElemento(domicilio: Property) {
-        abrirDetalle(domicilio, Modo.VISUALIZAR)
+        abrirDetalle(domicilio)
     }
 
-    private fun abrirDetalle(domicilio: Property?, modo: Modo?) {
-        val estadioDetalle = PropertyFullDataFragment(domicilio, modo)
+    private fun abrirDetalle(domicilio: Property?) {
+        val estadioDetalle = PropertyFullDataFragment(domicilio, Modo.VISUALIZAR)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         transaction.add(R.id.nav_host_fragment, estadioDetalle)

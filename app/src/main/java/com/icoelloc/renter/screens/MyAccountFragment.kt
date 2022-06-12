@@ -10,16 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.icoelloc.renter.R
 import com.icoelloc.renter.utils.CirculoTransformacion
 import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
 
 
 class MyAccountFragment : Fragment() {
@@ -33,7 +29,7 @@ class MyAccountFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var firebaseFirestore :FirebaseFirestore
+    private lateinit var firebaseFirestore: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,17 +60,17 @@ class MyAccountFragment : Fragment() {
         numAlquileres = root.findViewById(R.id.myacc_numalquiladas)
         numPropiedades = root.findViewById(R.id.myacc_numpropiedades)
 
-        user?.let { inicializar(it) }
+        user?.let { inicializar() }
 
         return root
 
     }
 
-    private fun inicializar(user: FirebaseUser) {
-        cargarUsuarios(user)
+    private fun inicializar() {
+        cargarDatosUsuario()
     }
 
-    private fun cargarUsuarios(user: FirebaseUser) {
+    private fun cargarDatosUsuario() {
         txtNombreUsuario.text = auth.currentUser?.displayName
         txtEmail.text = auth.currentUser?.email
         cargarImagenUsuario(auth.currentUser?.photoUrl)

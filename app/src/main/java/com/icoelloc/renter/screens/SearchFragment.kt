@@ -1,41 +1,34 @@
 package com.icoelloc.renter.screens
 
-import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.icoelloc.renter.R
 import com.icoelloc.renter.objects.Property
 import com.icoelloc.renter.utils.Modo
-import kotlinx.android.synthetic.main.fragment_property_full_data.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
-    private lateinit var ref: DatabaseReference
     private lateinit var fireStore: FirebaseFirestore
 
     private var domicilios = mutableListOf<Property>()
 
     private lateinit var domiciliosAdapter: PropertyListAdapter
-    private var paintSweep = Paint()
     private lateinit var usuario: FirebaseUser
 
 
@@ -185,7 +178,7 @@ class SearchFragment : Fragment() {
                 eventoClicFila(it)
             }
             domiciliosSearchRecycler.adapter = domiciliosAdapter
-            var localidad = buscadorInputLocalidad.text.toString()
+            val localidad = buscadorInputLocalidad.text.toString()
             val query = fireStore.collection("Propiedades").whereEqualTo("inquilino", "")
                 .whereGreaterThanOrEqualTo("localidad", localidad)
             /*
@@ -234,11 +227,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun abrirElemento(domicilio: Property) {
-        abrirDetalle(domicilio, Modo.VISUALIZAR)
+        abrirDetalle(domicilio)
     }
 
-    private fun abrirDetalle(domicilio: Property?, modo: Modo?) {
-        val estadioDetalle = PropertyFullDataFragment(domicilio, modo)
+    private fun abrirDetalle(domicilio: Property?) {
+        val estadioDetalle = PropertyFullDataFragment(domicilio, Modo.VISUALIZAR)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         transaction.add(R.id.nav_host_fragment, estadioDetalle)

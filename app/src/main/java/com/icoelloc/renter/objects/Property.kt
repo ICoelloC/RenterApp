@@ -1,7 +1,5 @@
 package com.icoelloc.renter.objects
 
-import java.util.*
-
 data class Property(
     var id: String = "",
     var nombre: String = "",
@@ -21,45 +19,6 @@ data class Property(
     var foto4: String = "",
     var foto5: String = "",
 ) {
-
-    constructor(
-        id: String,
-        nombre: String,
-        latitud: String,
-        localidad: String,
-        longitud: String,
-        inquilino: String,
-        propietario: String,
-        telefono: String,
-        banios: Int,
-        habitaciones: Int,
-        metros: Int,
-        precio:Int,
-        foto1: String,
-        foto2: String,
-        foto3: String,
-        foto4: String,
-        foto5: String,
-        fecha: Date
-    ) : this(
-        id,
-        nombre,
-        latitud,
-        localidad,
-        longitud,
-        inquilino,
-        propietario,
-        telefono,
-        banios,
-        habitaciones,
-        metros,
-        precio,
-        foto1,
-        foto2,
-        foto3,
-        foto4,
-        foto5
-    )
 
     override fun toString(): String {
         return "Lugar(id='$id', nombre='$nombre' localidad='$localidad',latitud='$latitud', longitud='$longitud', inquilino='$inquilino', propietario=$propietario, telefono=$telefono, banios=$banios, habitaciones='$habitaciones', metros='$metros', precio='$precio', foto1='$foto1', foto2='$foto2', foto3='$foto3', foto4='$foto4', foto5='$foto5')"

@@ -2,21 +2,16 @@ package com.icoelloc.renter.screens
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.location.Address
-import android.location.Geocoder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 import com.icoelloc.renter.R
 import com.icoelloc.renter.objects.Property
 import com.icoelloc.renter.utils.CirculoTransformacion
 import com.squareup.picasso.Picasso
-import java.lang.Double.parseDouble
-import java.util.*
 
 
 class PropertyListAdapter(
@@ -26,10 +21,6 @@ class PropertyListAdapter(
 
     ) : RecyclerView.Adapter<PropertyListAdapter.DomiciliosViewHolder>() {
 
-    companion object {
-        private const val TAG = "AdapterDomicilios"
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomiciliosViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_property, parent, false)
@@ -38,7 +29,7 @@ class PropertyListAdapter(
 
     override fun onBindViewHolder(holder: DomiciliosViewHolder, position: Int) {
         cargarFotoDomicilio(listaDomicilios[position], holder)
-        holder.itemNombre.text = listaDomicilios[position].nombre ?: ""
+        holder.itemNombre.text = listaDomicilios[position].nombre
         holder.itemLocalidad.text = listaDomicilios[position].localidad
         holder.itemTelefono.text = listaDomicilios[position].telefono
         holder.itemLocalidad.text

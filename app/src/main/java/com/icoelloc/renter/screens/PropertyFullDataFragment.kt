@@ -17,14 +17,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -50,13 +48,18 @@ import com.icoelloc.renter.utils.MyApp
 import com.icoelloc.renter.utils.PhotosUtils
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_property_full_data.*
-import kotlinx.android.synthetic.main.fragment_search.*
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.io.InputStream
 import java.lang.Double
 import java.util.*
+import kotlin.Boolean
+import kotlin.Exception
+import kotlin.Int
+import kotlin.String
+import kotlin.arrayOf
+import kotlin.isInitialized
+import kotlin.toString
+import kotlin.with
 
 class PropertyFullDataFragment(
     private var domicilio: Property? = null,
@@ -106,7 +109,7 @@ class PropertyFullDataFragment(
         fireStore = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
         Log.i(TAG, "Creando Domicilio Detalle")
-        view.setOnTouchListener { view, motionEvent ->
+        view.setOnTouchListener { _, _ ->
             return@setOnTouchListener true
         }
         initIU()
@@ -653,7 +656,7 @@ class PropertyFullDataFragment(
         )
         AlertDialog.Builder(context)
             .setTitle("Seleccionar Acción")
-            .setItems(fotoDialogoItems) { dialog, modo ->
+            .setItems(fotoDialogoItems) { _, modo ->
                 when (modo) {
                     0 -> elegirFotoGaleria()
                     1 -> tomarFotoCamara()
