@@ -290,7 +290,9 @@ class MyPropertiesFragment : Fragment() {
                     ).show()
                     return@addSnapshotListener
                 }
-                misPropSwipeRefresh.isRefreshing = false
+                if (misPropSwipeRefresh != null) {
+                    misPropSwipeRefresh.isRefreshing = false
+                }
                 for (doc in value!!.documentChanges) {
                     when (doc.type) {
                         // Documento agregado

@@ -79,7 +79,7 @@ class PropertyFullDataFragment(
 
     private val galeria = 1
     private val camara = 2
-    lateinit var imagenURI: Uri
+    private lateinit var imagenURI: Uri
     private val imagenDirectorio = "/Renter"
     private val imagenProporcion = 600
     private lateinit var foto: Bitmap
@@ -376,6 +376,7 @@ class PropertyFullDataFragment(
             inquilino = detalleDomicilioInputInquilino.text.toString().trim()
             latitud = posicion?.latitude.toString()
             longitud = posicion?.longitude.toString()
+            localidad = cargarLocalidad(posicion?.latitude.toString() , posicion?.longitude.toString())
         }
 
         fireStore.collection("Propiedades")
@@ -383,14 +384,9 @@ class PropertyFullDataFragment(
             .set(domicilio!!, SetOptions.merge())
             .addOnSuccessListener {
                 Log.i(TAG, "Domicilio actualizado con éxito con id: " + domicilio!!.id)
-                if (imagenURI.toString() != itemDetalleDomicilioFoto1.toString()) {
-                    actualizarFoto()
-                    cambiarVisibilidadBotones()
-                } else {
-                    Snackbar.make(requireView(), "¡Domicilio modificado!", Snackbar.LENGTH_LONG)
-                        .show()
-                    volver()
-                }
+                actualizarFoto()
+                cambiarVisibilidadBotones()
+                volver()
             }.addOnFailureListener { e -> Log.w(TAG, "Error actualizar lugar", e) }
     }
 
@@ -675,13 +671,13 @@ class PropertyFullDataFragment(
     }
 
     private fun tomarFotoCamara() {
+        // Si queremos hacer uso de fotos en alta calidad
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val nombre = PhotosUtils.crearNombreFoto(imagenPrefijo, imagenExtension)
-        val fichero = PhotosUtils.salvarFoto(imagenDirectorio, nombre, requireContext())
+        val fichero = PhotosUtils.salvarFoto(imagenDirectorio, nombre, context!!)
         imagenURI = Uri.fromFile(fichero)
-        Log.i("FOTO", imagenURI.toString())
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenURI)
         Log.i("Camara", imagenURI.path.toString())
         startActivityForResult(intent, camara)
