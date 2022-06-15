@@ -54,7 +54,7 @@
     <string name="contact_temp" translatable="false">contact_temp</string>
     <string name="prize_Temp" translatable="false">prize_temp</string>
     <string name="need_gallery" translatable="false">no gallery</string>
-    <string name="need_camera">need camera</string>
+    <string name="need_camera" translatable="false">need camera</string>
     <string name="properties_derails">Property Detail</string>
     <string name="nombre">Property Name</string>
     <string name="contacto">Contact Phone</string>
