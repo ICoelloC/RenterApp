@@ -56,9 +56,9 @@ class SearchFragment : Fragment() {
         cargarDomicilios()
         domiciliosSearchRecycler.layoutManager = LinearLayoutManager(context)
 
-        buscadorVerDisponiblesBTN.setOnClickListener {
+        /*buscadorVerDisponiblesBTN.setOnClickListener {
             mostrarTodosLosDomiciliosDisponibles()
-        }
+        }*/
 
 
         buscadorInputLocalidad.addTextChangedListener(object : TextWatcher {
@@ -228,6 +228,7 @@ class SearchFragment : Fragment() {
         longitud = doc["longitud"].toString(),
         localidad = doc["localidad"].toString(),
         inquilino = doc["inquilino"].toString(),
+        telefono = doc["telefono"].toString(),
         propietario = doc["propietario"].toString(),
         banios = doc["banios"]?.toString()?.toInt() ?: 0,
         habitaciones = doc["habitaciones"]?.toString()?.toInt() ?: 0,

@@ -2,8 +2,6 @@ package com.icoelloc.renter.screens
 
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -21,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.icoelloc.renter.R
 import com.icoelloc.renter.objects.Property
+import com.icoelloc.renter.utils.Modo
 import com.squareup.picasso.Picasso
 import kotlin.math.ceil
 
@@ -81,20 +81,22 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                     val miLugar = document.toObject(Property::class.java)
                     listaDomicilios.add(miLugar)
                 }
-                if (listaDomicilios.size > 0){
+                if (listaDomicilios.size > 0) {
                     procesarDomicilios(listaDomicilios)
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(context,
+                Toast.makeText(
+                    context,
                     "Error al acceder al servicio: " + exception.localizedMessage,
-                    Toast.LENGTH_LONG)
+                    Toast.LENGTH_LONG
+                )
                     .show()
             }
     }
 
     private fun procesarDomicilios(listaDomicilios: MutableList<Property>) {
-        listaDomicilios.forEach{
+        listaDomicilios.forEach {
             addMarcador(it)
         }
         actualizarCamara(listaDomicilios)
@@ -107,10 +109,11 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    val posicion = LatLng(domicilio.latitud.toDouble(), domicilio.longitud.toDouble())
+                    val posicion =
+                        LatLng(domicilio.latitud.toDouble(), domicilio.longitud.toDouble())
                     val imageView = ImageView(context)
 
-                    if (domicilio.foto1.isNotEmpty()){
+                    if (domicilio.foto1.isNotEmpty()) {
                         Picasso.get()
                             .load(domicilio.foto1)
                             .into(imageView, object : com.squareup.picasso.Callback {
@@ -121,7 +124,7 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                                         MarkerOptions() // Posición
                                             .position(posicion) // Título
                                             .title(domicilio.nombre) // Subtitulo
-                                                //mostrar los metros cuadrados, baños y habitaciones
+                                            //mostrar los metros cuadrados, baños y habitaciones
                                             .snippet("${domicilio.metros}m2, ${domicilio.banios} baños, ${domicilio.habitaciones} habitaciones")// Descripción
                                             .anchor(0.5f, 0.907f)
                                             .icon(BitmapDescriptorFactory.fromBitmap(pin))
@@ -136,7 +139,7 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                                     Log.d(TAG, "Error al descargar imagen")
                                 }
                             })
-                    }else{
+                    } else {
                         Picasso.get()
                             .load(R.drawable.renta)
                             .into(imageView, object : com.squareup.picasso.Callback {
@@ -192,7 +195,8 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                 matrix.postScale(scale, scale)
                 roundPaint.shader = shader
                 shader.setLocalMatrix(matrix)
-                bitmapRect[dp(5f).toFloat(), dp(5f).toFloat(), dp(52f + 5).toFloat()] = dp(52f + 5).toFloat()
+                bitmapRect[dp(5f).toFloat(), dp(5f).toFloat(), dp(52f + 5).toFloat()] =
+                    dp(52f + 5).toFloat()
                 canvas.drawRoundRect(bitmapRect, dp(26f).toFloat(), dp(26f).toFloat(), roundPaint)
             }
             canvas.restore()
@@ -215,7 +219,7 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
 
     private fun actualizarCamara(listaDomicilios: MutableList<Property>?) {
         val bc = LatLngBounds.Builder()
-        for (item in listaDomicilios!!){
+        for (item in listaDomicilios!!) {
             bc.include(LatLng(item.latitud.toDouble(), item.longitud.toDouble()))
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 120))
@@ -234,6 +238,19 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
 
     override fun onMarkerClick(marker: Marker): Boolean {
         marker.tag as Property
+        val propiedad = marker.tag as Property
+        Log.i("Mapa", propiedad.toString())
+        abrirDetalle(propiedad)
         return false
+
     }
+    private fun abrirDetalle(domicilio: Property?) {
+        val estadioDetalle = PropertyFullDataFragment(domicilio, Modo.VISUALIZAR)
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        transaction.add(R.id.nav_host_fragment, estadioDetalle)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
 }
