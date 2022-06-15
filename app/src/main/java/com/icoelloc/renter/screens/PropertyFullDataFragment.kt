@@ -146,12 +146,9 @@ class PropertyFullDataFragment(
         detalleDomicilioInputHabitaciones.setText("0")
         detalleDomicilioInputBanios.setText("0")
         detalleDomicilioInputInquilino.setText("")
-        detalleDomicilioPropietario.text = usuario.email
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
-        detalleDomicilioPropietario.visibility = View.GONE
         icono_telefono.visibility = View.GONE
-        detalleDomicilioPropietarioTelefono.visibility = View.GONE
         detalleDomicilioGuardarBtn.setOnClickListener { insertarDomicilio() }
         detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
 
@@ -173,9 +170,6 @@ class PropertyFullDataFragment(
         detalleDomicilioInputBanios.isEnabled = false
         detalleDomicilioInputInquilino.setText(domicilio?.inquilino.toString())
         detalleDomicilioInputInquilino.isEnabled = false
-        detalleDomicilioPropietario.text = domicilio?.propietario
-        detalleDomicilioPropietario.isEnabled = false
-        detalleDomicilioPropietario.visibility = View.GONE
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
         detalleDomicilioGuardarBtn.visibility = View.GONE
@@ -262,7 +256,6 @@ class PropertyFullDataFragment(
         detalleDomicilioInputBanios.isEnabled = true
         detalleDomicilioInputInquilino.isEnabled = true
         detalleDomicilioInputContacto.isEnabled = true
-        detalleDomicilioPropietario.visibility = View.GONE
         detalleDomicilioFabCamara.visibility = View.VISIBLE
         icono_telefono.visibility = View.GONE
         detalleDomicilioPropietarioTelefono.visibility = View.GONE
@@ -284,7 +277,7 @@ class PropertyFullDataFragment(
             localidad = cargarLocalidad(posicion?.latitude.toString() , posicion?.longitude.toString()),
             longitud = posicion?.longitude.toString(),
             inquilino = detalleDomicilioInputInquilino.text.toString(),
-            propietario = detalleDomicilioPropietario.text.toString().trim(),
+            propietario = auth.currentUser?.email.toString(),
             telefono = detalleDomicilioInputContacto.text.toString().trim(),
             banios = detalleDomicilioInputBanios.text.toString().trim().toInt(),
             habitaciones = detalleDomicilioInputHabitaciones.text.toString().trim().toInt(),
@@ -338,7 +331,6 @@ class PropertyFullDataFragment(
         detalleDomicilioInputHabitaciones.isEnabled = false
         detalleDomicilioInputBanios.isEnabled = false
         detalleDomicilioInputInquilino.isEnabled = false
-        detalleDomicilioPropietario.isEnabled = false
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
         detalleDomicilioGuardarBtn.visibility = View.GONE
@@ -425,17 +417,15 @@ class PropertyFullDataFragment(
         var localidad = ""
         val geocoder = Geocoder(context, Locale.getDefault())
         //si la latuitud o longuitud son nylas, no se puede geolocalizar
-        if (latitud != null || longitud != null) {
-            val addresses: List<Address>? =
-                geocoder.getFromLocation(
-                    Double.parseDouble(latitud),
-                    Double.parseDouble(longitud),
-                    1
-                )
-            if (addresses != null && addresses.isNotEmpty()) {
-                val address = addresses[0]
-                localidad = address.locality
-            }
+        val addresses: List<Address>? =
+            geocoder.getFromLocation(
+                Double.parseDouble(latitud),
+                Double.parseDouble(longitud),
+                1
+            )
+        if (addresses != null && addresses.isNotEmpty()) {
+            val address = addresses[0]
+            localidad = address.locality
         }
         return localidad
     }
@@ -530,7 +520,7 @@ class PropertyFullDataFragment(
         uiSettings.isCompassEnabled = true
         uiSettings.isZoomControlsEnabled = true
         uiSettings.isMapToolbarEnabled = true
-        mMap.setMinZoomPreference(12.0f)
+        mMap.setMinZoomPreference(6.0f)
         mMap.setOnMarkerClickListener(this)
     }
 
@@ -575,7 +565,7 @@ class PropertyFullDataFragment(
                 .snippet("${domicilio!!.metros}m2, ${domicilio!!.banios} baños, ${domicilio!!.habitaciones} habitaciones")// Descripción
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
         )
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion))
+        posicion?.let { CameraUpdateFactory.newLatLng(it) }?.let { mMap.moveCamera(it) }
     }
 
     private fun mapaActualizar() {
@@ -627,7 +617,8 @@ class PropertyFullDataFragment(
                             localizacion!!.latitude,
                             localizacion!!.longitude
                         )
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion))
+                        posicion?.let { CameraUpdateFactory.newLatLng(it) }
+                            ?.let { mMap.moveCamera(it) }
                     } else {
                         Log.i("GPS", "No se encuetra la última posición.")
                         Log.e("GPS", "Exception: %s", task.exception)
@@ -644,7 +635,7 @@ class PropertyFullDataFragment(
         }
     }
 
-    override fun onMarkerClick(marker: Marker?): Boolean {
+    override fun onMarkerClick(marker: Marker): Boolean {
         Log.i("Mapa", marker.toString())
         return false
     }
@@ -674,33 +665,39 @@ class PropertyFullDataFragment(
     }
 
     private fun tomarFotoCamara() {
-        // Si queremos hacer uso de fotos en alta calidad
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
+        val buildr = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(buildr.build())
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val nombre = PhotosUtils.crearNombreFoto(imagenPrefijo, imagenExtension)
-        val fichero = PhotosUtils.salvarFoto(imagenDirectorio, nombre, context!!)
-        imagenURI = Uri.fromFile(fichero)
+        val nombreFoto = PhotosUtils.crearNombreFoto(imagenPrefijo, imagenExtension)
+        val file = PhotosUtils.salvarFoto(imagenDirectorio, nombreFoto, requireContext())
+        imagenURI = Uri.fromFile(file)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenURI)
-        Log.i("Camara", imagenURI.path.toString())
         startActivityForResult(intent, camara)
     }
 
+    /**
+     * Siempre se ejecuta al realizar una acción
+     * @param requestCode Int
+     * @param resultCode Int
+     * @param data Intent?
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         Log.i("FOTO", "Opción:--->$requestCode")
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_CANCELED) {
             Log.i("FOTO", "Se ha cancelado")
         }
+        // Procesamos la foto de la galeria
         if (requestCode == galeria) {
             Log.i("FOTO", "Entramos en Galería")
             if (data != null) {
                 // Obtenemos su URI con su dirección temporal
                 val contentURI = data.data!!
                 try {
+                    // Obtenemos el bitmap de su almacenamiento externo
+                    // Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     if (Build.VERSION.SDK_INT < 28) {
-                        this.foto =
-                            MediaStore.Images.Media.getBitmap(context?.contentResolver, contentURI)
+                        this.foto = MediaStore.Images.Media.getBitmap(context?.contentResolver, contentURI)
                     } else {
                         val source: ImageDecoder.Source =
                             ImageDecoder.createSource(context?.contentResolver!!, contentURI)
@@ -718,16 +715,9 @@ class PropertyFullDataFragment(
                     // Vamos a copiar nuestra imagen en nuestro directorio comprimida por si acaso.
                     val nombre = PhotosUtils.crearNombreFoto(imagenPrefijo, imagenExtension)
                     val fichero =
-                        PhotosUtils.copiarFoto(
-                            this.foto,
-                            nombre,
-                            imagenDirectorio,
-                            imagenCompresion,
-                            requireContext()
-                        )
+                        PhotosUtils.copiarFoto(this.foto, nombre, imagenDirectorio, imagenCompresion, context!!)
                     imagenURI = Uri.fromFile(fichero)
-                    Toast.makeText(context, "¡Foto rescatada de la galería!", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(context, "¡Foto rescatada de la galería!", Toast.LENGTH_SHORT).show()
                     itemDetalleDomicilioFoto1.setImageBitmap(this.foto)
 
                 } catch (e: IOException) {
@@ -736,16 +726,14 @@ class PropertyFullDataFragment(
                 }
             }
         } else if (requestCode == camara) {
+            Log.i("FOTO", "Entramos en Camara")
             try {
                 if (Build.VERSION.SDK_INT < 28) {
-                    this.foto =
-                        MediaStore.Images.Media.getBitmap(context?.contentResolver, imagenURI)
+                    this.foto = MediaStore.Images.Media.getBitmap(context?.contentResolver, imagenURI)
                 } else {
-                    val source: ImageDecoder.Source =
-                        ImageDecoder.createSource(context?.contentResolver!!, imagenURI)
+                    val source: ImageDecoder.Source = ImageDecoder.createSource(context?.contentResolver!!, imagenURI)
                     this.foto = ImageDecoder.decodeBitmap(source)
                 }
-                Log.i("Camara", imagenURI.path.toString())
                 PhotosUtils.comprimirFoto(imagenURI.toFile(), this.foto, this.imagenCompresion)
                 itemDetalleDomicilioFoto1.setImageBitmap(this.foto)
                 Toast.makeText(context, "¡Foto Salvada!", Toast.LENGTH_SHORT).show()

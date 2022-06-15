@@ -50,8 +50,9 @@
             android:layout_marginTop="32dp"
             android:text="@string/sample_text"
             android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="32sp"
+            android:textColor="@color/renter_nav_drawer_header"
+            android:textSize="35sp"
+            android:fontFamily="@font/sticknobills"
             android:textStyle="bold" />
 
         <TextView
@@ -61,7 +62,8 @@
             android:layout_marginTop="18dp"
             android:text="@string/sample_text"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:fontFamily="@font/kdam"
+            android:textColor="@color/renter_nav_drawer_separator"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -81,12 +83,17 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
+                android:fontFamily="@font/sticknobills"
+                android:textStyle="bold"
+                android:textColor="@color/renter_nav_drawer_header"
                 android:text="x" />
 
             <TextView
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
+                android:fontFamily="@font/kdam"
+                android:textColor="@color/renter_nav_drawer_separator"
                 android:text="@string/rented" />
 
             <ImageView
@@ -101,12 +108,17 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
+                android:fontFamily="@font/sticknobills"
+                android:textStyle="bold"
+                android:textColor="@color/renter_nav_drawer_header"
                 android:text="x" />
 
             <TextView
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
+                android:fontFamily="@font/kdam"
+                android:textColor="@color/renter_nav_drawer_separator"
                 android:text="@string/availables" />
 
         </LinearLayout>
