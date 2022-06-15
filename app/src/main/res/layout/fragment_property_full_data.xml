@@ -3,34 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/itemDetalleDomicilioFoto1"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/renta"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/detalleDomicilioFabCamara"
-        style="@android:style/Widget.Material.ImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/renter_nav_drawer"
-        android:clickable="true"
-        android:src="@drawable/camara"
-        app:rippleColor="@color/white"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:contentDescription="@string/buttoncamera" />
 
     <RelativeLayout
+        android:background="@drawable/customborder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:id="@+id/itemDetalleDomicilioLinearLayout"
@@ -223,6 +205,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
+                android:id="@+id/itemDetalleLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
@@ -258,11 +241,10 @@
             android:id="@+id/detalleDomicilioMapa"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="200dp"
             android:layout_below="@+id/itemDetalleDomicilioLinearLayout"
-            android:layout_marginStart="0dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginTop="9dp"
-            android:layout_marginEnd="0dp"
             android:layout_marginBottom="5dp" />
 
         <LinearLayout
@@ -270,7 +252,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/detalleDomicilioMapa"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginHorizontal="5dp"
             android:gravity="center_horizontal">
 
             <Button
@@ -301,5 +284,29 @@
 
         </LinearLayout>
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/itemDetalleDomicilioFoto1"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:scaleType="centerCrop"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="0dp"
+        android:src="@drawable/renta" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/detalleDomicilioFabCamara"
+        style="@android:style/Widget.Material.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/renter_nav_drawer"
+        android:clickable="true"
+        android:src="@drawable/camara"
+        app:rippleColor="@color/white"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="@string/buttoncamera" />
 
 </FrameLayout>

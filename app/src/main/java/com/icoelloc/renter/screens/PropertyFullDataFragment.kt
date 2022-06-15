@@ -149,6 +149,7 @@ class PropertyFullDataFragment(
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
         icono_telefono.visibility = View.GONE
+        itemDetalleLL.visibility = View.GONE
         detalleDomicilioGuardarBtn.setOnClickListener { insertarDomicilio() }
         detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
 
@@ -674,6 +675,8 @@ class PropertyFullDataFragment(
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenURI)
         startActivityForResult(intent, camara)
     }
+
+
 
     /**
      * Siempre se ejecuta al realizar una acción
