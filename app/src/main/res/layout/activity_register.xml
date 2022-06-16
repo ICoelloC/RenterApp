@@ -26,10 +26,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/appname"
+        android:fontFamily="@font/sticknobills"
         android:layout_marginTop="30dp"
-        android:textColor="@color/black"
+        android:textColor="@color/renter_nav_drawer_header"
         android:textStyle="bold"
-        android:textSize="45sp"
+        android:textSize="60sp"
         android:gravity="center"/>
 
     <TextView
@@ -60,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            />
+            android:fontFamily="@font/kdam"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            />
+            android:fontFamily="@font/kdam"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +102,9 @@
             android:id="@+id/register_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white" />
+            android:inputType="textPassword"
+            android:background="@color/white"
+            android:fontFamily="@font/kdam"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -2,12 +2,10 @@ package com.icoelloc.renter.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -30,21 +28,18 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val registerBtnRegistrarse: Button = findViewById(R.id.register_register)
-        val registerLinkSignIn: TextView = findViewById<Button>(R.id.register_signin_link)
-
-        registerLinkSignIn.setOnClickListener {
-            goLoginScreen()
-        }
-
-        registerBtnRegistrarse.setOnClickListener {
-            checkInputs()
-            createAccount()
-        }
+        storage = Firebase.storage
+        auth = Firebase.auth
 
         initUI()
     }
 
+    /**
+     * Método para crear una cuenta en Firebase, anteriormente hemos comprobado que los campos estén
+     * rellenos
+     * Creamos la cuenta y si se ha creado con exito, actualizamos la información del usuario,
+     * asignando el username introducido al displayname de la cuenta de autenticación normal.
+     */
     private fun createAccount() {
         val registerEmail: TextView = findViewById(R.id.register_email)
         val registerPassword: TextView = findViewById(R.id.register_password)
@@ -73,6 +68,10 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Método para asignarle un displayname al usuario de autenticación normal de Firebase
+     * @param user el usuario de Firebase al que asignarle el displayname
+     */
     private fun updateProfile(user: FirebaseUser) {
 
         val registerUsername: TextView = findViewById(R.id.register_username)
@@ -88,25 +87,42 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Mátodo para incializar los botones y acciones de la interfaz de usuario
+     */
     private fun initUI() {
-        storage = Firebase.storage
-        auth = Firebase.auth
+
+
+        val registerBtnRegistrarse: Button = findViewById(R.id.register_register)
+        val registerLinkSignIn: TextView = findViewById<Button>(R.id.register_signin_link)
+
+        registerLinkSignIn.setOnClickListener {
+            goLoginScreen()
+        }
+
+        registerBtnRegistrarse.setOnClickListener {
+            checkInputs()
+            createAccount()
+        }
+
     }
 
-
+    /**
+     * Método para validar que los campos han sido rellenados
+     */
     private fun checkInputs() {
         val email = findViewById<TextView>(R.id.register_email)
         val password = findViewById<TextView>(R.id.register_password)
         //check if email and password are not empty
         if (email.text.isEmpty() || password.text.isEmpty()) {
-            Utils.showToast(this, "Please fill all fields")
+            Utils.showToast(this, "Por favor, rellene todos los campos")
         } else {
             //check if email is valid
             if (!Utils.isEmailValid(email.text.toString())) {
-                Utils.showToast(this, "Please enter a valid email")
+                Utils.showToast(this, "Por favor, escriba un email válido")
             } else {
                 if (!Utils.isPasswordValid(password.text.toString())) {
-                    Utils.showToast(this, "Please enter a valid password")
+                    Utils.showToast(this, "Por favor, escriba una contraseña válida")
                 }
             }
         }

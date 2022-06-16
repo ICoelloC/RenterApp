@@ -59,6 +59,9 @@ class MyHomeFragment : Fragment() {
         initUI()
     }
 
+    /**
+     * inicializamos ls interfaz
+     */
     private fun initUI() {
         iniciarSwipeRefresh()
         cargarDomicilios()
@@ -66,6 +69,9 @@ class MyHomeFragment : Fragment() {
         domiciliosRecycler.layoutManager = LinearLayoutManager(context)
     }
 
+    /**
+     * inicializamos el swipe refresh que nos permitirá actualizar la lista de domicilios
+     */
     private fun iniciarSwipeRefresh() {
         domiciliosSwipeRefresh.setColorSchemeResources(R.color.renter_nav_drawer_header)
         domiciliosSwipeRefresh.setProgressBackgroundColorSchemeResource(R.color.white)
@@ -94,7 +100,9 @@ class MyHomeFragment : Fragment() {
     private fun abrirElemento(domicilio: Property) {
         abrirDetalle(domicilio)
     }
-
+    /**
+     * Abriremos la pantalla de la vivienda en modo de visualizar
+     */
     private fun abrirDetalle(domicilio: Property?) {
         val estadioDetalle = PropertyFullDataFragment(domicilio, Modo.VISUALIZAR)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -109,6 +117,10 @@ class MyHomeFragment : Fragment() {
         abrirElemento(domicilio)
     }
 
+    /**
+     * mostramos los domicilios cuyo inquilino sea el mismo de la sesión actual
+     * Insertamos,modificamos o eliminamos elementos de la lista
+     */
     private fun cargarDomicilios() {
         domicilios.clear()
         domiciliosSwipeRefresh.isRefreshing = true
@@ -161,7 +173,9 @@ class MyHomeFragment : Fragment() {
         if (index >= 0)
             actualizarItemLista(miEstadio, index)
     }
-
+    /**
+     * Dibujamos el fondo al deslizar para borrar
+     */
     private fun documentToDomicilio(doc: Map<String, Any>) = Property(
         id = doc["id"].toString(),
         nombre = doc["nombre"].toString(),

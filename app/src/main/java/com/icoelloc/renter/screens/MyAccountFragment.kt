@@ -70,6 +70,9 @@ class MyAccountFragment : Fragment() {
         cargarDatosUsuario()
     }
 
+    /**
+     * Mostramos los datos del usuario
+     */
     private fun cargarDatosUsuario() {
         txtNombreUsuario.text = auth.currentUser?.displayName
         txtEmail.text = auth.currentUser?.email
@@ -79,15 +82,19 @@ class MyAccountFragment : Fragment() {
 
     }
 
+    /**
+     * Mostramos el numero de propiedades que tiene el usuario
+     */
     private fun cargarNumPropiedades(email: String?) {
-
-
         firebaseFirestore.collection("Propiedades").whereEqualTo("propietario", email).get()
             .addOnSuccessListener {
                 numPropiedades.text = it.size().toString()
             }
     }
 
+    /**
+     * mostramos el número de propiedades en las que está como inquilino
+     */
     private fun cargarNumPropiedadesAlquiladas(email: String?) {
         firebaseFirestore.collection("Propiedades").whereEqualTo("inquilino", email).get()
             .addOnSuccessListener {
@@ -95,8 +102,10 @@ class MyAccountFragment : Fragment() {
             }
     }
 
+    /**
+     * Mostramos la imagen del usuario
+     */
     private fun cargarImagenUsuario(photoUrl: Uri?) {
-
         if (photoUrl != null) {
             Picasso.get()
                 .load(photoUrl)

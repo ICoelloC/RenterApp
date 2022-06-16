@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -39,7 +38,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_Renter)
         setContentView(R.layout.activity_main)
+
         auth = Firebase.auth
 
 
@@ -53,10 +54,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() == 0) {
-            super.onBackPressed();
+        if (fragmentManager.backStackEntryCount == 0) {
+            super.onBackPressed()
         } else {
-            getFragmentManager().popBackStack();
+            fragmentManager.popBackStack()
         }
     }
 
@@ -95,6 +96,10 @@ class MainActivity : AppCompatActivity() {
         mostrarDatosUsuarioMenu()
     }
 
+    /**
+     * Método para mostrar la información de la sesión actual de Firebase en el nav drawer,
+     * mostrando su foto, nombre de usuario y email
+     */
     private fun mostrarDatosUsuarioMenu() {
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val headerView: View = navigationView.getHeaderView(0)
@@ -111,24 +116,28 @@ class MainActivity : AppCompatActivity() {
                 .into(navUserImage)
         }
 
+        //al pulsar en la foto abriremos el dialog para pregunatar si queremos cerrar la sesión
         navUserImage.setOnClickListener{
             salirSesion()
         }
     }
 
+    /**
+     * Método para crear el dialog para cerar la sesión o no
+     */
     private fun salirSesion() {
         Log.i("Sesion", "Saliendo...")
         AlertDialog.Builder(this)
             .setIcon(R.drawable.exit_icon)
             .setTitle("Cerrar sesión actual")
             .setMessage("¿Desea salir de la sesión actual?")
-            .setPositiveButton(getString(R.string.accept)) { dialog, which -> cerrarSesion() }
+            .setPositiveButton(getString(R.string.accept)) { _, _ -> cerrarSesion() }
             .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
     /**
-     * Cerra la sesión Actual
+     * Cerrar la sesión Actual de Firebase
      */
     private fun cerrarSesion() {
         // Cerramos en Firebase
@@ -142,11 +151,18 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Comprobamos si hay conexión a internet disponible y si tenemos acceso al GPS de
+     * nuestro dispositivo
+     */
     private fun comprobarConexion() {
         comprobarRed()
         comprobarGPS()
     }
 
+    /**
+     * Comprobamos si hay  acceso al GPS
+     */
     private fun comprobarGPS() {
         if (!Utils.isGPSAvaliable(applicationContext)) {
             val snackbar = Snackbar.make(
@@ -163,6 +179,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Comprobamos si hay conexión a internet disponible
+     */
     private fun comprobarRed() {
         if (!Utils.isNetworkAvailable(applicationContext)) {
             val snackbar = Snackbar.make(
@@ -179,8 +198,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Con la clase creada MyAoo,
+     */
     private fun initPermisos() {
-        if (!(this.application as MyApp).APP_PERMISOS)
+        if (!(this.application as MyApp).appPermisos)
             (this.application as MyApp).initPermisos()
     }
 

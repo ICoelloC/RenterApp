@@ -23,15 +23,10 @@ object PhotosUtils {
     }
 
     /**
-     * Salva un fichero en un directorio
+     * Guarda un fichero en un directorio
      */
     fun salvarFoto(path: String, nombre: String, context: Context): File? {
-        // Directorio publico
-        // Almacenamos en nuestro directorio de almacenamiento externo asignado en Pictures
         val dirFotos = File((context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath) + path)
-        // Solo si queremos crear un directorio y que todo sea público
-        //val dirFotos = File(Environment.getExternalStorageDirectory().toString() + path)
-        // Si no existe el directorio, lo creamos solo si es publico
         if (!dirFotos.exists()) {
             dirFotos.mkdirs()
         }
@@ -50,9 +45,6 @@ object PhotosUtils {
      */
     fun copiarFoto(bitmap: Bitmap, nombre: String, path: String, compresion: Int, context: Context): File {
         val dirFotos = File((context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath) + path)
-        // Solo si queremos crear un directorio y que todo sea público
-        //val dirFotos = File(Environment.getExternalStorageDirectory().toString() + path)
-        // Si no existe el directorio, lo creamos solo si es publico
         if (!dirFotos.exists()) {
             dirFotos.mkdirs()
         }
@@ -71,7 +63,6 @@ object PhotosUtils {
      * Comprime una imagen
      */
     fun comprimirFoto(fichero: File, bitmap: Bitmap, compresion: Int) {
-        // Recuperamos el Bitmap
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, compresion, bytes)
         val fo = FileOutputStream(fichero)

@@ -36,7 +36,11 @@ class LoginActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        /*
+        Método para mostrar la SplashScreen, creamos un estilo nuevo con el logo de la app en el
+        centro de la pantalla.
+        Lo asignamos al inicio en el Manifest, y a los dos segundos mostramos el estilo de nuestra aplicación
+         */
         Thread.sleep(2000)
         setTheme(R.style.Theme_Renter)
 
@@ -51,18 +55,24 @@ class LoginActivity : AppCompatActivity() {
         procesarSesiones()
     }
 
+    /**
+     * Método para comprobar si existe una sesión de autenticación Google o normal de Firebase
+     * ya en la aplicación
+     */
     private fun procesarSesiones() {
         // Vemos si hay sesión
         val currentUser = auth.currentUser
         if (currentUser != null) {
             Log.i("Login", "SÍ hay sesión activa")
-            Toast.makeText(baseContext, "Auth: Sesión activa", Toast.LENGTH_SHORT).show()
             abrirMain()
         } else {
             Log.i("Login", "NO hay sesión activa")
         }
     }
 
+    /**
+     * Método inicializar los botones y las acciones que van a realizar
+     */
     private fun initButtons() {
 
         val linkSignUp = findViewById<TextView>(R.id.login_signup_link)
@@ -98,6 +108,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Método para inicializar Google
+     */
     private fun initGoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.req_id_token))
@@ -107,6 +120,9 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient.signOut()
     }
 
+    /**
+     * Método para iniciar sesión con la autenticación de Firebase de usuario y contraseña
+     */
     private fun normalLogin() {
 
         val loginEmail = findViewById<TextView>(R.id.login_email)
@@ -137,10 +153,16 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Método para comprobar si ya existe es usuario.
+     * Si existe inicia sesión normalmente con la autenticación de Firebase
+     * Si no existe nos notifica que ese usuario con ese correo no está registrado
+     * @param email introducido en el input de Email
+     * @param pass introducido en el input de Password
+     */
     private fun userExists(email: String, pass: String) {
 
         val loginEmail = findViewById<TextView>(R.id.login_email)
-        val loginPassword = findViewById<TextView>(R.id.login_password)
 
 
         auth.signInWithEmailAndPassword(email, pass)
@@ -169,6 +191,9 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Al salir de la activityde la selección de cuenta de Google , accedemos a la aplicación con esa cuenta de Google
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == googleSignIn) {
@@ -207,6 +232,7 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
+
 
     private fun loginGoogle() {
         val signInIntent: Intent = googleSignInClient.signInIntent

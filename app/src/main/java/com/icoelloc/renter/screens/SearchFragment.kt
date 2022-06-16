@@ -52,25 +52,25 @@ class SearchFragment : Fragment() {
         initUI()
     }
 
+    /**
+     * inicilizamos la interfaz, al escribir en el buscador mostraremos las viviendas que se encuentren
+     * en esa localidad o cadena superiores de tamaño, por ejemplo si tenemos una localidad en
+     * Argamasilla de Calatrava, y escribimos Argamasilla de, mostrará primero Argamasilla de Calatrava o de Alba,
+     * pero si hay alguna localidad cuya cadena sea más grande aparecerá también, pero primero mostrará anteriormente
+     * las dichas
+     */
     private fun initUI() {
         cargarDomicilios()
         domiciliosSearchRecycler.layoutManager = LinearLayoutManager(context)
 
-        buscadorVerDisponiblesBTN.setOnClickListener {
+        /*buscadorVerDisponiblesBTN.setOnClickListener {
             mostrarTodosLosDomiciliosDisponibles()
-        }
+        }*/
 
-        buscadorBuscarBTN.setOnClickListener {
-            buscarDomiciliosPorParametro()
-        }
 
         buscadorInputLocalidad.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                Log.i(
-                    "Buscador",
-                    "El texto ha cambiado a: " + buscadorInputLocalidad.text.toString()
-                )
                 domicilios.clear()
                 domiciliosAdapter = PropertyListAdapter(domicilios) {
                     eventoClicFila(it)
@@ -115,17 +115,13 @@ class SearchFragment : Fragment() {
     }
 
     private fun mostrarTodosLosDomiciliosDisponibles() {
-        /*buscadorInputMetros.setText("")
-        buscadorInputPrecio.setText("")
-        buscadorInputHabitaciones.setText("")
-        buscadorInputBanios.setText("")*/
         buscadorInputLocalidad.setText("")
         domicilios.clear()
         domiciliosAdapter = PropertyListAdapter(domicilios) {
             eventoClicFila(it)
         }
         domiciliosSearchRecycler.adapter = domiciliosAdapter
-        val query = fireStore.collection("Propiedades").whereEqualTo("inquilino", "")
+        val query = fireStore.collection("Propiedades")
         query.get().addOnSuccessListener { value ->
             for (doc in value!!.documentChanges) {
                 Log.i("Resultado = ", doc.document.data.toString())
@@ -142,69 +138,6 @@ class SearchFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun comprobarFormulario(): Boolean {
-        var sal = true
-        if (buscadorInputLocalidad.text?.isEmpty()!!) {
-            buscadorInputLocalidad.error = "Introduzca la localidad"
-            sal = false
-        }
-        /*
-        if (buscadorInputMetros.text?.isEmpty()!!) {
-            buscadorInputMetros.error = "Introduzca el mínimo de metros cuadrados"
-            sal = false
-        }
-        if (buscadorInputPrecio.text?.isEmpty()!!) {
-            buscadorInputPrecio.error = "Introduzca el máximo que quiera pagar por el domicilio"
-            sal = false
-        }
-        if (buscadorInputBanios.text?.isEmpty()!!) {
-            buscadorInputBanios.error = "Introduzca el mínimo número de baños"
-            sal = false
-        }
-        if (buscadorInputHabitaciones.text?.isEmpty()!!) {
-            buscadorInputHabitaciones.error = "Introduzca el mínimo número de habitaciones"
-            sal = false
-        }
-        */
-        return sal
-    }
-
-    private fun buscarDomiciliosPorParametro() {
-        if (comprobarFormulario()) {
-            domicilios.clear()
-            domiciliosAdapter = PropertyListAdapter(domicilios) {
-                eventoClicFila(it)
-            }
-            domiciliosSearchRecycler.adapter = domiciliosAdapter
-            val localidad = buscadorInputLocalidad.text.toString()
-            val query = fireStore.collection("Propiedades").whereEqualTo("inquilino", "")
-                .whereGreaterThanOrEqualTo("localidad", localidad)
-            /*
-            query.whereLessThanOrEqualTo("precio", buscadorInputPrecio.text.toString().toInt())
-                .whereEqualTo("metros", buscadorInputMetros.text.toString().trim().toInt())
-                .whereEqualTo("habitaciones", buscadorInputHabitaciones.text.toString().trim().toInt())
-                .whereEqualTo("banios", buscadorInputBanios.text.toString().trim())
-             */
-            query.get().addOnSuccessListener { value ->
-                for (doc in value!!.documentChanges) {
-                    Log.i("Resultado = ", doc.document.data.toString())
-                    when (doc.type) {
-                        DocumentChange.Type.ADDED -> {
-                            insertarDocumento(doc.document.data)
-                        }
-                        DocumentChange.Type.MODIFIED -> {
-                            modificarDocumento(doc.document.data)
-                        }
-                        DocumentChange.Type.REMOVED -> {
-                            eliminarDocumento(doc.document.data)
-                        }
-                    }
-                }
-            }
-        }
-
     }
 
     private fun insertarItemLista(item: Property) {
@@ -230,6 +163,9 @@ class SearchFragment : Fragment() {
         abrirDetalle(domicilio)
     }
 
+    /**
+     * al pulsar en la imagen abrimos la vivienda para mostrar la información de está
+     */
     private fun abrirDetalle(domicilio: Property?) {
         val estadioDetalle = PropertyFullDataFragment(domicilio, Modo.VISUALIZAR)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -244,13 +180,16 @@ class SearchFragment : Fragment() {
         abrirElemento(domicilio)
     }
 
+    /**
+     * Cargamos todos los domicilios
+     */
     private fun cargarDomicilios() {
         domicilios.clear()
         domiciliosAdapter = PropertyListAdapter(domicilios) {
             eventoClicFila(it)
         }
         domiciliosSearchRecycler.adapter = domiciliosAdapter
-        fireStore.collection("Propiedades").whereEqualTo("inquilino", "")
+        fireStore.collection("Propiedades")
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Toast.makeText(
@@ -302,6 +241,7 @@ class SearchFragment : Fragment() {
         longitud = doc["longitud"].toString(),
         localidad = doc["localidad"].toString(),
         inquilino = doc["inquilino"].toString(),
+        telefono = doc["telefono"].toString(),
         propietario = doc["propietario"].toString(),
         banios = doc["banios"]?.toString()?.toInt() ?: 0,
         habitaciones = doc["habitaciones"]?.toString()?.toInt() ?: 0,
