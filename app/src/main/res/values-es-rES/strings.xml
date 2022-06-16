@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Renter</string>
+    <string name="sign_in">Iniciar sesión</string>
+    <string name="sign_in_google">Iniciar sesión con Google</string>
+    <string name="sign_in_description">Inicia sesión con los servicios de Google</string>
+    <string name="my_properties">Mis propiedades</string>
+    <string name="my_home">Mi casa</string>
+    <string name="owned">Alquilada</string>
+    <string name="available">Propiedades</string>
+    <string name="close_to_me">Cerca de mí</string>
+    <string name="search">Buscador</string>
+    <string name="account">Cuenta</string>
+    <string name="my_account">Mi perfil</string>
+    <string name="open">abrir</string>
+    <string name="close">cerrar</string>
+    <string name="availables">propiedades</string>
+    <string name="rented">alquiladas</string>
+    <string name="bedrooms">habitación/es</string>
+    <string name="bathrooms">baño/s</string>
+    <string name="email">Email</string>
+    <string name="renter_description">La nueva forma de encontrar tu nuevo hogar</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">Si no tienes una cuenta</string>
+    <string name="have_account">Si ya tienes una cuenta</string>
+    <string name="sign_up_here">" regístrate aquí"</string>
+    <string name="sign_in_here">" loguéate aquí"</string>
+    <string name="password">Contraseña</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="properties_derails">Detalles de la propiedad</string>
+    <string name="nombre">Nombre de la propiedad</string>
+    <string name="contacto">Teléfono de contacto</string>
+    <string name="superficie">Área m2</string>
+    <string name="precio">€/mes</string>
+    <string name="habitaciones">Habitaciones</string>
+    <string name="banios">Baños</string>
+    <string name="save">Guardar</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Borrar</string>
+    <string name="accept">aceptar</string>
+    <string name="cancel">cancelar</string>
+    <string name="min_banios">Mín. Baños</string>
+    <string name="min_habitaciones">Mín. Habitaciones</string>
+    <string name="min_superficie">Mín. m2</string>
+    <string name="max_precio">Máx. m2</string>
+    <string name="view_all">Ver todas</string>
+    <string name="phone">Teléfono</string>
+    <string name="localidad">Ciudad</string>
+    <string name="visit_us">Visítanos en las siguientes redes sociales</string>
+    <string name="isAlreadyExist" translatable="false">Ya existe el usuario</string>
+    <string name="no_net">Error, sin conexion a internet</string>
+    <string name="fill_all_fields">\"Por favor, relleno los campos\"</string>
+    <string name="enter_valid_password">\"Por favor, escriba un correo válido\"</string>
+    <string name="enter_valid_mail">\"Por favor, escriba una contraseña válida\"</string>
+</resources>

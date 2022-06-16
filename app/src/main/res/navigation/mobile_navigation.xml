@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.Renter"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_cerca_mi">
+
+    <fragment
+        android:id="@+id/nav_mi_domicilio"
+        android:name="com.icoelloc.renter.screens.MyHomeFragment"
+        android:label="@string/my_home"
+        tools:layout="@layout/fragment_my_home" />
+
+    <fragment
+        android:id="@+id/nav_cerca_mi"
+        android:name="com.icoelloc.renter.screens.CloseToMeFragment"
+        android:label="@string/close_to_me"
+        tools:layout="@layout/fragment_close_to_me" />
+
+    <fragment
+        android:id="@+id/nav_mis_propiedades"
+        android:name="com.icoelloc.renter.screens.MyPropertiesFragment"
+        android:label="@string/my_properties"
+        tools:layout="@layout/fragment_my_properties" />
+
+    <fragment
+        android:id="@+id/domicilio_Detalles"
+        android:name="com.icoelloc.renter.screens.PropertyFullDataFragment"
+        android:label="@string/properties_derails"
+        tools:layout="@layout/fragment_property_full_data" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_mi_perfil"
+        android:name="com.icoelloc.renter.screens.MyAccountFragment"
+        android:label="@string/my_account"
+        tools:layout="@layout/fragment_my_account" />
+
+    <fragment
+        android:id="@+id/nav_buscar"
+        android:name="com.icoelloc.renter.screens.SearchFragment"
+        android:label="@string/my_properties"
+        tools:layout="@layout/fragment_search" />
+
+</navigation>

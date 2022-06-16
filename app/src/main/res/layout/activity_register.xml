@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/Theme.Renter"
+    tools:context=".login.LoginActivity"
+    app:flow_verticalAlign="center">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        app:srcCompat="@drawable/renta"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="63dp"
+        android:contentDescription="@string/google_logo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/appname"
+        android:fontFamily="@font/sticknobills"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/renter_nav_drawer_header"
+        android:textStyle="bold"
+        android:textSize="60sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/twDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/renter_description"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        android:textSize="16sp"
+        android:gravity="center"/>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"
+        app:startIconDrawable="@drawable/username_icon"
+        app:endIconMode="clear_text"
+        app:endIconDrawable="@drawable/clear_icon"
+        android:hint="@string/username"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:fontFamily="@font/kdam"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"
+        app:startIconDrawable="@drawable/email_icon"
+        app:endIconMode="clear_text"
+        app:endIconDrawable="@drawable/clear_icon"
+        android:hint="@string/email"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:fontFamily="@font/kdam"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"
+        app:startIconDrawable="@drawable/pass_icon"
+        app:endIconMode="password_toggle"
+        app:endIconDrawable="@drawable/pass_visible"
+        android:hint="@string/password"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:background="@color/white"
+            android:fontFamily="@font/kdam"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/register_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#1F4571"
+        android:drawablePadding="0dp"
+        android:text="Register"
+        android:textStyle="bold"
+        tools:ignore="RtlHardcoded,TextContrastCheck" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/have_account"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/register_signin_link"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/sign_in_here"
+            android:textColor="@color/renter_nav_drawer"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

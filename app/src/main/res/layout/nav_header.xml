@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    android:background="@drawable/temp_image">
+
+    <ImageView
+        android:id="@+id/nav_drawer_header_profile_pi"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:src="@drawable/renta"
+        android:contentDescription="@string/profile_image" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nav_drawer_header_username"
+        android:fontFamily="@font/sticknobills"
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:text="@string/username"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nav_drawer_header_email"
+        android:padding="8dp"
+        android:textSize="15sp"
+        android:text="@string/email"
+        android:fontFamily="@font/kdam"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+    
+</LinearLayout>
