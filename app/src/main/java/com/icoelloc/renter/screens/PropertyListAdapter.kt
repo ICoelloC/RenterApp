@@ -27,6 +27,9 @@ class PropertyListAdapter(
         return DomiciliosViewHolder(view)
     }
 
+    /**
+     * Bindeamos los datos de la colección de domicilios al componente de la tarjeta
+     */
     override fun onBindViewHolder(holder: DomiciliosViewHolder, position: Int) {
         cargarFotoDomicilio(listaDomicilios[position], holder)
         holder.itemNombre.text = listaDomicilios[position].nombre
@@ -70,6 +73,9 @@ class PropertyListAdapter(
         return listaDomicilios.size
     }
 
+    /**
+     * Cargamos la foto del domicilio y la mostramos en la tarjeta
+     */
     private fun cargarFotoDomicilio(domicilio: Property, holder: DomiciliosViewHolder) {
         if (domicilio.foto1 != "") {
             Picasso.get()
@@ -82,6 +88,9 @@ class PropertyListAdapter(
         }
     }
 
+    /**
+     * Establecemos una imagen por defecto a las viviendas que no tengan foto
+     */
     private fun imagenPorDefecto(holder: DomiciliosViewHolder) {
         holder.itemFoto.setImageBitmap(
             BitmapFactory.decodeResource(
@@ -91,6 +100,10 @@ class PropertyListAdapter(
         )
     }
 
+
+    /**
+     * Inicializamos los componentes de la tarjeta
+     */
     class DomiciliosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemFoto: ImageView = itemView.findViewById(R.id.itemPropiedadImagen)
         val itemNombre: TextView = itemView.findViewById(R.id.itemPropiedadName)

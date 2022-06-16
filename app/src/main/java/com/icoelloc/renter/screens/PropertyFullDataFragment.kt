@@ -115,6 +115,14 @@ class PropertyFullDataFragment(
         initIU()
     }
 
+    /**
+     * Método para inicialzar la interfaz de usuario
+     * 1º inicializamos de nuevo los permisos si hiciera falta alguno
+     * 2º obtenemos el usuario actual Firebase, a la hora de asignar propietario de la vivienda
+     * 3º según el modo de visualización de la interfaz mostraremos algunos campos o no
+     * 4º leemos nuesta posición actual
+     * 5º inicializamos el mapa
+     */
     private fun initIU() {
         initPermisos()
         initUsuario()
@@ -135,26 +143,38 @@ class PropertyFullDataFragment(
     }
 
     private fun initPermisos() {
-        this.permisos = (activity?.application as MyApp).APP_PERMISOS
+        this.permisos = (activity?.application as MyApp).appPermisos
     }
 
+    /**
+     * Modo insertar
+     * Asignamos un valor por defecto  a los campos, e inicializamos los botones con sus acciones necesarias
+     */
     private fun initModoInsertar() {
         detalleDomicilioInputNombre.setText("")
         detalleDomicilioInputContacto.setText("")
         detalleDomicilioInputMetros.setText("0")
         detalleDomicilioInputPrecio.setText("0")
-        detalleDomicilioInputHabitaciones.setText("0")
-        detalleDomicilioInputBanios.setText("0")
+        detalleDomicilioInputHabitaciones.setText("1")
+        detalleDomicilioInputBanios.setText("1")
         detalleDomicilioInputInquilino.setText("")
         detalleDomicilioEditarBtn.visibility = View.GONE
         detalleDomicilioBorrarBtn.visibility = View.GONE
         icono_telefono.visibility = View.GONE
         itemDetalleLL.visibility = View.GONE
         detalleDomicilioGuardarBtn.setOnClickListener { insertarDomicilio() }
-        detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
+        detalleDomicilioFabCamara.setOnClickListener { elegirFotoGaleria() }
+        //detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
 
     }
 
+    /**
+     * Modo visualizar
+     * Recogemos los valores del domicilio y los mostramos en los campos pertinentes, y los hacemos
+     * no editables, ocultamos los botones para que no puedane hacer nada.
+     * Si pulsamos en el teléfono podremos llamar por teléfono
+     * Cargamos la foto de la vivienda
+     */
     private fun initModoVisualizar() {
 
         detalleDomicilioInputNombre.setText(domicilio?.nombre)
@@ -260,7 +280,8 @@ class PropertyFullDataFragment(
         detalleDomicilioFabCamara.visibility = View.VISIBLE
         icono_telefono.visibility = View.GONE
         detalleDomicilioPropietarioTelefono.visibility = View.GONE
-        detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
+        detalleDomicilioFabCamara.setOnClickListener { elegirFotoGaleria() }
+        //detalleDomicilioFabCamara.setOnClickListener { initDialogFoto() }
         detalleDomicilioGuardarBtn.setOnClickListener { actualizarDomicilio() }
     }
 
@@ -275,7 +296,10 @@ class PropertyFullDataFragment(
             id = UUID.randomUUID().toString(),
             nombre = detalleDomicilioInputNombre.text.toString().trim(),
             latitud = posicion?.latitude.toString(),
-            localidad = cargarLocalidad(posicion?.latitude.toString() , posicion?.longitude.toString()),
+            localidad = cargarLocalidad(
+                posicion?.latitude.toString(),
+                posicion?.longitude.toString()
+            ),
             longitud = posicion?.longitude.toString(),
             inquilino = detalleDomicilioInputInquilino.text.toString(),
             propietario = auth.currentUser?.email.toString(),
@@ -305,8 +329,8 @@ class PropertyFullDataFragment(
         foto.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         // no hace falta borrarla si no solo sobre escribirla
-        val estadioImagenRef = storageRef.child("images/${nombre}.jpg")
-        val uploadTask = estadioImagenRef.putBytes(data)
+        val domicilioImagenRef = storageRef.child("images/${nombre}.jpg")
+        val uploadTask = domicilioImagenRef.putBytes(data)
         uploadTask.addOnFailureListener {
             Log.i(TAG, "storage:failure: " + it.localizedMessage)
         }.addOnSuccessListener { taskSnapshot ->
@@ -340,7 +364,7 @@ class PropertyFullDataFragment(
 
 
     private fun eliminarDomicilio() {
-        alertaDialogo("Eliminar Estadio", "¿Quieres eliminarlo?")
+        alertaDialogo("Eliminar Domicilio", "¿Quieres eliminarlo?")
     }
 
     private fun eliminar() {
@@ -357,7 +381,7 @@ class PropertyFullDataFragment(
 
     private fun actualizarDomicilio() {
         if (comprobarFormulario()) {
-            alertaDialogo("Modificar Estadio", "¿Desea modificar este estadio?")
+            alertaDialogo("Modificar Domicilio", "¿Desea modificar este Domicilio?")
         }
     }
 
@@ -372,7 +396,8 @@ class PropertyFullDataFragment(
             inquilino = detalleDomicilioInputInquilino.text.toString().trim()
             latitud = posicion?.latitude.toString()
             longitud = posicion?.longitude.toString()
-            localidad = cargarLocalidad(posicion?.latitude.toString() , posicion?.longitude.toString())
+            localidad =
+                cargarLocalidad(posicion?.latitude.toString(), posicion?.longitude.toString())
         }
 
         fireStore.collection("Propiedades")
@@ -392,8 +417,8 @@ class PropertyFullDataFragment(
         foto.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         // no hace falta borrarla si no solo sobre escribirla
-        val estadioImagenRef = storageRef.child("images/${domicilio?.nombre}.jpg")
-        val uploadTask = estadioImagenRef.putBytes(data)
+        val domicilioImagenRef = storageRef.child("images/${domicilio?.nombre}.jpg")
+        val uploadTask = domicilioImagenRef.putBytes(data)
         uploadTask.addOnFailureListener {
             Log.i(TAG, "storage:failure: " + it.localizedMessage)
         }.addOnSuccessListener { taskSnapshot ->
@@ -677,7 +702,6 @@ class PropertyFullDataFragment(
     }
 
 
-
     /**
      * Siempre se ejecuta al realizar una acción
      * @param requestCode Int
@@ -700,7 +724,8 @@ class PropertyFullDataFragment(
                     // Obtenemos el bitmap de su almacenamiento externo
                     // Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     if (Build.VERSION.SDK_INT < 28) {
-                        this.foto = MediaStore.Images.Media.getBitmap(context?.contentResolver, contentURI)
+                        this.foto =
+                            MediaStore.Images.Media.getBitmap(context?.contentResolver, contentURI)
                     } else {
                         val source: ImageDecoder.Source =
                             ImageDecoder.createSource(context?.contentResolver!!, contentURI)
@@ -718,9 +743,16 @@ class PropertyFullDataFragment(
                     // Vamos a copiar nuestra imagen en nuestro directorio comprimida por si acaso.
                     val nombre = PhotosUtils.crearNombreFoto(imagenPrefijo, imagenExtension)
                     val fichero =
-                        PhotosUtils.copiarFoto(this.foto, nombre, imagenDirectorio, imagenCompresion, context!!)
+                        PhotosUtils.copiarFoto(
+                            this.foto,
+                            nombre,
+                            imagenDirectorio,
+                            imagenCompresion,
+                            context!!
+                        )
                     imagenURI = Uri.fromFile(fichero)
-                    Toast.makeText(context, "¡Foto rescatada de la galería!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "¡Foto rescatada de la galería!", Toast.LENGTH_SHORT)
+                        .show()
                     itemDetalleDomicilioFoto1.setImageBitmap(this.foto)
 
                 } catch (e: IOException) {
@@ -732,9 +764,11 @@ class PropertyFullDataFragment(
             Log.i("FOTO", "Entramos en Camara")
             try {
                 if (Build.VERSION.SDK_INT < 28) {
-                    this.foto = MediaStore.Images.Media.getBitmap(context?.contentResolver, imagenURI)
+                    this.foto =
+                        MediaStore.Images.Media.getBitmap(context?.contentResolver, imagenURI)
                 } else {
-                    val source: ImageDecoder.Source = ImageDecoder.createSource(context?.contentResolver!!, imagenURI)
+                    val source: ImageDecoder.Source =
+                        ImageDecoder.createSource(context?.contentResolver!!, imagenURI)
                     this.foto = ImageDecoder.decodeBitmap(source)
                 }
                 PhotosUtils.comprimirFoto(imagenURI.toFile(), this.foto, this.imagenCompresion)

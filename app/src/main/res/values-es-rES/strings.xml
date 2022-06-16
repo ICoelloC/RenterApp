@@ -47,4 +47,9 @@
     <string name="phone">Teléfono</string>
     <string name="localidad">Ciudad</string>
     <string name="visit_us">Visítanos en las siguientes redes sociales</string>
+    <string name="isAlreadyExist" translatable="false">Ya existe el usuario</string>
+    <string name="no_net">Error, sin conexion a internet</string>
+    <string name="fill_all_fields">\"Por favor, relleno los campos\"</string>
+    <string name="enter_valid_password">\"Por favor, escriba un correo válido\"</string>
+    <string name="enter_valid_mail">\"Por favor, escriba una contraseña válida\"</string>
 </resources>

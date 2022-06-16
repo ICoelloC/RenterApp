@@ -52,6 +52,13 @@ class SearchFragment : Fragment() {
         initUI()
     }
 
+    /**
+     * inicilizamos la interfaz, al escribir en el buscador mostraremos las viviendas que se encuentren
+     * en esa localidad o cadena superiores de tamaño, por ejemplo si tenemos una localidad en
+     * Argamasilla de Calatrava, y escribimos Argamasilla de, mostrará primero Argamasilla de Calatrava o de Alba,
+     * pero si hay alguna localidad cuya cadena sea más grande aparecerá también, pero primero mostrará anteriormente
+     * las dichas
+     */
     private fun initUI() {
         cargarDomicilios()
         domiciliosSearchRecycler.layoutManager = LinearLayoutManager(context)
@@ -156,6 +163,9 @@ class SearchFragment : Fragment() {
         abrirDetalle(domicilio)
     }
 
+    /**
+     * al pulsar en la imagen abrimos la vivienda para mostrar la información de está
+     */
     private fun abrirDetalle(domicilio: Property?) {
         val estadioDetalle = PropertyFullDataFragment(domicilio, Modo.VISUALIZAR)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -170,6 +180,9 @@ class SearchFragment : Fragment() {
         abrirElemento(domicilio)
     }
 
+    /**
+     * Cargamos todos los domicilios
+     */
     private fun cargarDomicilios() {
         domicilios.clear()
         domiciliosAdapter = PropertyListAdapter(domicilios) {

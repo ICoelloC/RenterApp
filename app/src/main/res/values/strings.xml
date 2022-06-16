@@ -41,7 +41,6 @@
     <string name="sign_up_here">\ sign up here</string>
     <string name="sign_in_here">\ sign in here</string>
     <string name="no_net" translatable="false">Error, sin conexion a internet</string>
-    <string name="isAlreadyExist" translatable="false">Ya existe el usuario</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="userNotCorrect" translatable="false">Invalid user</string>
@@ -80,4 +79,8 @@
     <string name="phone">Phone:</string>
     <string name="localidad">City</string>
     <string name="temp_disponibility" translatable="false">temp_disponibility</string>
+    <string name="fill_all_fields">\"Please fill all fields\"</string>
+    <string name="enter_valid_mail">\"Please enter a valid email\"</string>
+    <string name="enter_valid_password">\"Please enter a valid password\"</string>
+    <string name="isAlreadyExist">User already exits</string>
 </resources>

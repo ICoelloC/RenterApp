@@ -66,6 +66,9 @@ class MyPropertiesFragment : Fragment() {
         initUI()
     }
 
+    /**
+     * inicializamos ls interfaz
+     */
     private fun initUI() {
         iniciarSwipeRefresh()
         cargarDomicilios()
@@ -74,6 +77,9 @@ class MyPropertiesFragment : Fragment() {
         domiciliosFabNuevo.setOnClickListener { nuevoElemento() }
     }
 
+    /**
+     * inicializamos el swipe refresh que nos permitirá actualizar la lista de domicilios
+     */
     private fun iniciarSwipeRefresh() {
         misPropSwipeRefresh.setColorSchemeResources(R.color.renter_nav_drawer_header)
         misPropSwipeRefresh.setProgressBackgroundColorSchemeResource(R.color.white)
@@ -82,6 +88,11 @@ class MyPropertiesFragment : Fragment() {
         }
     }
 
+    /**
+     * inicializamos el swipe horizontal para el lado izquierdo y el lado derecho
+     * Swipe para el lado derecho: MODIFICAR
+     * Swipe para el lado izquierdo: ELIMINAR
+     */
     private fun iniciarSwipeHorizontal() {
         val simpleItemTouchCallback: ItemTouchHelper.SimpleCallback =
             object : ItemTouchHelper.SimpleCallback(
@@ -143,6 +154,9 @@ class MyPropertiesFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(domiciliosRecycler)
     }
 
+    /**
+     * Dibujamos el fondo al deslizar para borrar
+     */
     private fun botonDerecho(canvas: Canvas, dX: Float, itemView: View, width: Float) {
         paintSweep.color = Color.RED
         val background = RectF(
@@ -159,6 +173,9 @@ class MyPropertiesFragment : Fragment() {
         canvas.drawBitmap(icon, null, iconDest, paintSweep)
     }
 
+    /**
+     * Dibujamos el fondo al deslizar para modificar
+     */
     private fun botonIzquierdo(canvas: Canvas, dX: Float, itemView: View, width: Float) {
         paintSweep.color = Color.GREEN
         val background = RectF(
@@ -205,8 +222,10 @@ class MyPropertiesFragment : Fragment() {
         domiciliosAdapter.notifyDataSetChanged()
     }
 
+    /**
+     * al borrar el elemento abriremos un dialog preguntando si queremos borrarlo o no
+     */
     private fun borrarElemento(position: Int) {
-
         val builder = AlertDialog.Builder(context)
         with(builder)
         {
@@ -258,6 +277,10 @@ class MyPropertiesFragment : Fragment() {
         abrirDetalle(domicilio, Modo.VISUALIZAR)
     }
 
+    /**
+     * Según la acción que hagamos, bien sea visualizar o modificar, abriremos la pantalla de la vivienda
+     * en un modo u otro
+     */
     private fun abrirDetalle(domicilio: Property?, modo: Modo?) {
         val estadioDetalle = PropertyFullDataFragment(domicilio, modo)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -272,6 +295,10 @@ class MyPropertiesFragment : Fragment() {
         abrirElemento(domicilio)
     }
 
+    /**
+     * mostramos los domicilios cuyo propietario sea el mismo de la sesión actual
+     * Insertamos,modificamos o eliminamos elementos de la lista
+     */
     private fun cargarDomicilios() {
         domicilios.clear()
         misPropSwipeRefresh.isRefreshing = true
@@ -327,6 +354,9 @@ class MyPropertiesFragment : Fragment() {
             actualizarItemLista(miEstadio, index)
     }
 
+    /**
+     * Dibujamos el fondo al deslizar para borrar
+     */
     private fun documentToDomicilio(doc: Map<String, Any>) = Property(
         id = doc["id"].toString(),
         nombre = doc["nombre"].toString(),

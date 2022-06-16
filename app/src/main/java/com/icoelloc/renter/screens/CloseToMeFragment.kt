@@ -60,18 +60,27 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         initMapa()
     }
 
+    /**
+     * inicializamos el mapa
+     */
     private fun initMapa() {
         val mapFragment =
             (childFragmentManager.findFragmentById(R.id.miMapa) as SupportMapFragment?)!!
         mapFragment.getMapAsync(this)
     }
 
+    /**
+     * Cuándo el mapa este incializados, configuraremos este
+     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         configurarUIMapa()
         puntosMapa()
     }
 
+    /**
+     * mostrar los puntos en el mapa si hay vivendas registradas
+     */
     private fun puntosMapa() {
         fireStore.collection("Propiedades")
             .get()
@@ -95,6 +104,9 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             }
     }
 
+    /**
+     * Por cada domicilio añadimos el marcador
+     */
     private fun procesarDomicilios(listaDomicilios: MutableList<Property>) {
         listaDomicilios.forEach {
             addMarcador(it)
@@ -103,6 +115,10 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         mMap.setOnMarkerClickListener(this)
     }
 
+    /**
+     * Método para añadir el marcador en forma de logo circular con la imagen de la vivienda, al
+     * pinchar en esta, mostrará un mini resumen de esta
+     */
     private fun addMarcador(domicilio: Property) {
         // Buscamos la fotografia
         val docRef = fireStore.collection("Propiedades").document(domicilio.id)
@@ -175,6 +191,10 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             }
     }
 
+    /**
+     * Creamos el pin del mapa, en mi caso no le puse logo, si no que solo quiero el efecto del
+     * fondo de la imagen
+     */
     private fun crearPin(bitmap: Bitmap?): Bitmap? {
         var result: Bitmap? = null
         try {
@@ -217,6 +237,10 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             ceil((resources.displayMetrics.density * value).toDouble()).toInt()
     }
 
+    /**
+     * Método para mostrar en pantalla todos los domicilios insertados, si en España hay un domcilio
+     * y Otro en Londres, se mostraran ambos en pantalla
+     */
     private fun actualizarCamara(listaDomicilios: MutableList<Property>?) {
         val bc = LatLngBounds.Builder()
         for (item in listaDomicilios!!) {
@@ -225,6 +249,12 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 120))
     }
 
+    /**
+     * Configuramos el mapa, para visualizarlo en modo normal de Firebase
+     * permitimos el scroll, permitumos girar el mapa, el compás para localizarnos, el zoom,
+     * y los controles del zoom con los dedos
+     * Permitimos que se vean los edificios y el modelo 3D de los edificios
+     */
     private fun configurarUIMapa() {
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         val uiConfig: UiSettings = mMap.uiSettings
@@ -236,6 +266,10 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         mMap.isIndoorEnabled = true
     }
 
+    /**
+     * Al pulsar sobre el punto, nos abrirá la ventana con los datos del fragment en modo visualizar
+     *
+     */
     override fun onMarkerClick(marker: Marker): Boolean {
         marker.tag as Property
         val propiedad = marker.tag as Property
@@ -244,6 +278,10 @@ class CloseToMeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         return false
 
     }
+
+    /**
+     * Abrir la ventana con los datos del fragment en modo visualizar
+     */
     private fun abrirDetalle(domicilio: Property?) {
         val estadioDetalle = PropertyFullDataFragment(domicilio, Modo.VISUALIZAR)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
