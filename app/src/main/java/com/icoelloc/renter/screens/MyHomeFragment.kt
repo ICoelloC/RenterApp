@@ -167,11 +167,11 @@ class MyHomeFragment : Fragment() {
     }
 
     private fun modificarDocumento(doc: Map<String, Any>) {
-        val miEstadio = documentToDomicilio(doc)
-        Log.i(TAG, "Modificando lugar: ${miEstadio.id}")
-        val index = domicilios.indexOf(miEstadio)
+        val miDomicilio = documentToDomicilio(doc)
+        Log.i(TAG, "Modificando lugar: ${miDomicilio.id}")
+        val index = domicilios.indexOf(miDomicilio)
         if (index >= 0)
-            actualizarItemLista(miEstadio, index)
+            actualizarItemLista(miDomicilio, index)
     }
     /**
      * Dibujamos el fondo al deslizar para borrar
